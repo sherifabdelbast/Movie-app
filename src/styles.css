@@ -7,7 +7,7 @@
     height: 8px; 
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #c2ccd8;
+    background-color: #566d89;
     border-radius: 10px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
