@@ -10,28 +10,12 @@ export class MovieCardComponent {
 
   @Input() movieItem : any;
   @Output() sendToParent = new EventEmitter<number>();
-  // deleteMovie() {
-  //   console.log(this.movieItem.id);
-  //   this.sendToParent.emit(this.movieItem.id);
-  // }
 
-  // moveToMovieDetails(movieId: number) {
-  //   // Navigation logic
-  // }
-
-  // toggleWatchlist(movie: any) {
-  //   // Watchlist logic
-  // }
-  // toggleWatchlist() {
-  // // }
-  // handleViewDetails(){
-
-  // }
   constructor(private router: Router) {}
 
-  // moveToMovieDetails() {
-  //   this.router.navigate(['/movies', this.movieItem.id]);
+  moveToMovieDetails() {
+    this.router.navigate(['/movies', this.movieItem.id]);
 
-  // }
+  }
 
 }

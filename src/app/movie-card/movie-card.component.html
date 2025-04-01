@@ -1,8 +1,6 @@
 
-<!-- movie-card.component.html -->
 <div (click)="moveToMovieDetails()" class="movie-card bg-white rounded-lg shadow-md overflow-hidden w-50 m-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg">
   <div class="relative">
-    <!-- Movie Poster -->
     <img
       src="https://image.tmdb.org/t/p/w500/{{movieItem.poster_path}}"
       alt="{{movieItem.original_title}} Poster"
@@ -10,27 +8,22 @@
       onerror="this.src='assets/default-poster.jpg'"
     >
 
-    <!-- Rating Badge -->
     <div class="absolute top-2 right-2 bg-yellow-400 text-gray-900 font-bold px-2 py-1 rounded-full text-xs flex items-center">
       {{movieItem.vote_average}} ★
     </div>
   </div>
 
   <div class="p-4">
-    <!-- Movie Title -->
     <h2 class="movie-name text-xl font-bold text-gray-800 mb-2 truncate">
       {{movieItem.original_title}}
     </h2>
 
-    <!-- Movie Details -->
     <div class="movie-details flex justify-between items-center text-sm text-gray-600">
       <span class="release-year">
         {{movieItem.release_date}}
       </span>
 
-      <!-- Action Buttons -->
       <div class="flex space-x-2">
-        <!-- Add to Watchlist Button (Heart Icon) -->
         <button
           class="p-1 border-2 border-yellow-400 rounded-full text-yellow-400 hover:bg-yellow-50 transition-colors duration-200"
           >
