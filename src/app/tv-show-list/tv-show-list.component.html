@@ -1,0 +1,30 @@
+<!-- tv-show-list.component.html -->
+<div class="filter-buttons flex gap-4 p-4">
+  <button 
+    (click)="filterShows('today')" 
+    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+  >Today</button>
+  <button 
+    (click)="filterShows('week')" 
+    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+  >This Week</button>
+  <button 
+    (click)="filterShows('all')" 
+    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+  >Show All</button>
+</div>
+
+<div class="p-4">
+  <h2 class="text-3xl font-bold text-gray-700 mb-3">TV Shows</h2>
+  <div class="flex gap-4 overflow-x-auto whitespace-nowrap custom-scrollbar">
+    @for (tvShow of tvShows; track tvShow.id) {
+      @if (tvShow) {
+        <div class="flex-shrink-0 w-48">
+          <app-tv-card [tvShow]="tvShow"></app-tv-card>
+        </div>
+      }
+    } @empty {
+      <p>No TV shows found</p>
+    }
+  </div>
+</div>

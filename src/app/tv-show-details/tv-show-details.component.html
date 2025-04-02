@@ -1,0 +1,67 @@
+<!-- tv-show-details.component.html -->
+<!-- Full corrected template -->
+<div class="p-8 bg-gray-50 min-h-screen">
+  @if(isLoading) {
+    <div class="text-center py-12">Loading...</div>
+  } @else if (errorMessage) {
+    <div class="text-red-500 text-center py-12">{{ errorMessage }}</div>
+  } @else if (tvShow) {
+    <div class="max-w-7xl mx-auto">
+      <!-- Backdrop Image -->
+      <div class="relative h-96 rounded-xl overflow-hidden mb-8">
+        <img 
+          [src]="'https://image.tmdb.org/t/p/w1400_and_h450_face' + tvShow.backdrop_path" 
+          [alt]="tvShow.name + ' backdrop'"
+          class="w-full h-full object-cover"
+        >
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent"></div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Poster Section -->
+        <div class="w-full md:w-1/3">
+          <img 
+            [src]="'https://image.tmdb.org/t/p/w500' + tvShow.poster_path" 
+            [alt]="tvShow.name + ' poster'"
+            class="w-full rounded-xl shadow-lg"
+          >
+        </div>
+
+        <!-- Details Section -->
+        <div class="w-full md:w-2/3">
+          <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ tvShow.name }}</h1>
+          <div class="flex items-center gap-4 mb-6">
+            <div class="flex items-center gap-2 bg-yellow-400 px-3 py-1 rounded-full">
+              <span class="text-gray-900 font-bold">{{ tvShow.vote_average}}</span>
+              <span class="text-gray-900">★</span>
+            </div>
+            <span class="text-gray-600">{{ tvShow.first_air_date | date:'yyyy' }}</span>
+          </div>
+
+          <h3 class="text-xl font-semibold mb-2">Overview</h3>
+          <p class="text-gray-600 mb-6">{{ tvShow.overview }}</p>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <h4 class="text-sm text-gray-500">Status</h4>
+              <p class="font-medium">{{ tvShow.status }}</p>
+            </div>
+            <div>
+              <h4 class="text-sm text-gray-500">Seasons</h4>
+              <p class="font-medium">{{ tvShow.number_of_seasons }}</p>
+            </div>
+            <div>
+              <h4 class="text-sm text-gray-500">Episodes</h4>
+              <p class="font-medium">{{ tvShow.number_of_episodes }}</p>
+            </div>
+            <div>
+              <h4 class="text-sm text-gray-500">Language</h4>
+              <p class="font-medium">{{ tvShow.original_language | uppercase }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
