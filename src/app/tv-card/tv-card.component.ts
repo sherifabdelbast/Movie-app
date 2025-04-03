@@ -1,5 +1,3 @@
-
-
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,8 +11,8 @@ import { TvShow } from '../models/tvshow.interface';
   styleUrl: './tv-card.component.css'
 })
 export class TvCardComponent {
-  @Input() tvShow!: TvShow
-  @Output() sendToParent = new EventEmitter<number>();
+  @Input() tvShow!: TvShow;
+  @Output() favorite = new EventEmitter<number>();
   
   constructor(private router: Router) {}
   
@@ -22,14 +20,13 @@ export class TvCardComponent {
     this.router.navigate(['/tv-shows', this.tvShow.id]);
   }
   
-  handleImageError(event: any) {
-    if (event.target.src !== 'https://via.placeholder.com/500x750?text=No+Poster') {
-      event.target.src = 'https://via.placeholder.com/500x750?text=No+Poster';
-    }
+  toggleFavorite(event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    this.favorite.emit(this.tvShow.id);
   }
 
   formatDate(dateString: string | null): string {
-    if (!dateString) return 'Unknown';
+    if (!dateString) return 'TBA';
     const date = new Date(dateString);
     return isNaN(date.getTime()) ? 'Invalid Date' : date.getFullYear().toString();
   }

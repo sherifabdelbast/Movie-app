@@ -1,9 +1,10 @@
 // tv-show-details.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TvShowService } from '../services/tv-show.service';
 import { TvShow } from '../models/tvshow.interface';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tv-show-details',
@@ -14,6 +15,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 })
 export class TvShowDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private tvShowService = inject(TvShowService);
   
   tvShow?: TvShow;
@@ -29,15 +31,20 @@ export class TvShowDetailsComponent implements OnInit {
 
   private loadTvShowDetails(id: string) {
     this.isLoading = true;
-    this.tvShowService.getTvShowDetails(id).subscribe({
-      next: (show) => {
-        this.tvShow = show;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to load TV show details';
-        this.isLoading = false;
-      }
-    });
+    this.tvShowService.getTvShowDetails(id)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (show) => {
+          this.tvShow = show;
+        },
+        error: (err) => {
+          console.error('Error loading TV show:', err);
+          this.errorMessage = 'Failed to load TV show details';
+        }
+      });
+  }
+  
+  goBack() {
+    this.router.navigate(['/tv-shows']);
   }
 }

@@ -4,6 +4,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { TvCardComponent } from '../tv-card/tv-card.component';
 import { TvShowService } from '../services/tv-show.service';
 import { TvShow } from '../models/tvshow.interface';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tv-show-list',
@@ -15,16 +16,41 @@ import { TvShow } from '../models/tvshow.interface';
 export class TvShowListComponent implements OnInit {
   allShows: TvShow[] = [];
   tvShows: TvShow[] = [];
-  tvShowService = inject(TvShowService);
+  isLoading = true;
+  activeFilter: 'today' | 'week' | 'all' = 'all';
+  
+  // Pagination properties
+  currentPage = 1;
+  totalPages = 1;
+  totalResults = 0;
+  
+  private tvShowService = inject(TvShowService);
 
   ngOnInit() {
-    this.tvShowService.getPopularTvShows().subscribe(response => {
-      this.allShows = response.results;
-      this.tvShows = [...this.allShows];
-    });
+    this.loadShows();
+  }
+  
+  loadShows(page: number = 1) {
+    this.isLoading = true;
+    this.tvShowService.getPopularTvShows(page)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (response) => {
+          this.allShows = response.results;
+          this.currentPage = response.page;
+          this.totalPages = response.total_pages;
+          this.totalResults = response.total_results;
+          this.filterShows(this.activeFilter);
+        },
+        error: (error) => {
+          console.error('Error loading TV shows', error);
+          this.tvShows = [];
+        }
+      });
   }
 
   filterShows(range: 'today' | 'week' | 'all') {
+    this.activeFilter = range;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -48,6 +74,42 @@ export class TvShowListComponent implements OnInit {
       case 'all':
         this.tvShows = [...this.allShows];
         break;
+    }
+  }
+  
+  // Calculate the page numbers to display
+  getVisiblePageNumbers(): number[] {
+    const visiblePages: number[] = [];
+    
+    // Show 5 pages centered around current page if possible
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages, this.currentPage + 2);
+    
+    for (let i = startPage; i <= endPage; i++) {
+      visiblePages.push(i);
+    }
+    
+    return visiblePages;
+  }
+  
+  // Pagination methods
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) {
+      return;
+    }
+    
+    this.loadShows(page);
+  }
+  
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.goToPage(this.currentPage + 1);
+    }
+  }
+  
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.goToPage(this.currentPage - 1);
     }
   }
 }
