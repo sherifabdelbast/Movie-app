@@ -1,10 +1,11 @@
 // tv-show-details.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, Output, EventEmitter } from '@angular/core';
 import { TvShowService } from '../services/tv-show.service';
 import { TvShow } from '../models/tvshow.interface';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tv-show-details',
@@ -13,10 +14,11 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './tv-show-details.component.html',
   styleUrls: ['./tv-show-details.component.css']
 })
-export class TvShowDetailsComponent implements OnInit {
+export class TvShowDetailsComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private tvShowService = inject(TvShowService);
+  private subscriptions = new Subscription();
   
   @Output() favorite = new EventEmitter<number>();
   
@@ -25,15 +27,16 @@ export class TvShowDetailsComponent implements OnInit {
   errorMessage?: string;
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    const routeSub = this.route.params.subscribe(params => {
       const id = params['id'];
       this.loadTvShowDetails(id);
     });
+    this.subscriptions.add(routeSub);
   }
 
   private loadTvShowDetails(id: string) {
     this.isLoading = true;
-    this.tvShowService.getTvShowDetails(id)
+    const detailsSub = this.tvShowService.getTvShowDetails(id)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (show) => {
@@ -44,6 +47,7 @@ export class TvShowDetailsComponent implements OnInit {
           this.errorMessage = 'Failed to load TV show details';
         }
       });
+    this.subscriptions.add(detailsSub);
   }
   
   goBack() {
@@ -64,5 +68,10 @@ export class TvShowDetailsComponent implements OnInit {
     if (this.tvShow) {
       console.log('Added to wishlist:', this.tvShow.id);
     }
+  }
+  
+  ngOnDestroy() {
+    // Clean up all subscriptions when the component is destroyed
+    this.subscriptions.unsubscribe();
   }
 }
