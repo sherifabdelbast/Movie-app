@@ -1,138 +1,145 @@
+// src/app/components/watch-list/watch-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-interface WatchlistItem {
-  id: number;
-  title: string;
-  posterUrl: string;
-  year: string;
-  mediaType: 'movie' | 'tv';
-  rating?: number;
-  // Movie specific properties
-  runtime?: number;
-  director?: string;
-  // TV specific properties
-  seasons?: number;
-  network?: string;
-  // Watch status
-  watched: boolean;
-  favorite: boolean;
-}
+import { CommonModule } from '@angular/common';
+import { WatchlistService } from '../services/watchlist.service';
+import { WatchlistItem } from '../models/watchlist-item.interface';
 
 @Component({
   selector: 'app-watch-list',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './watch-list.component.html',
   styleUrls: ['./watch-list.component.css']
 })
 export class WatchListComponent implements OnInit {
   watchlistItems: WatchlistItem[] = [];
   filteredItems: WatchlistItem[] = [];
-  activeFilter: 'all' | 'movies' | 'tvshows' = 'all';
-
-  constructor() {}
-
+  activeFilter: 'all' | 'movies' | 'tvshows' | 'favorites' | 'watched' | 'unwatched' = 'all';
+  sortOption: 'dateAdded' | 'title' | 'rating' = 'dateAdded';
+  sortDirection: 'asc' | 'desc' = 'desc';
+  
+  constructor(private watchlistService: WatchlistService) {}
+  
   ngOnInit(): void {
-    // In a real app, you would fetch this from a service that interfaces with TMDB API
-    this.loadWatchlistItems();
-    this.filterItems('all');
+    // Subscribe to watchlist changes
+    this.watchlistService.watchlist$.subscribe(items => {
+      this.watchlistItems = items;
+      this.applyFilterAndSort();
+    });
   }
-
-  loadWatchlistItems(): void {
-    // Mock data - in a real app, this would come from a service
-    this.watchlistItems = [
-      {
-        id: 1,
-        title: 'Inception',
-        posterUrl: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg',
-        year: '2010',
-        mediaType: 'movie',
-        rating: 8.8,
-        runtime: 148,
-        director: 'Christopher Nolan',
-        watched: false,
-        favorite: true
-      },
-      {
-        id: 2,
-        title: 'Breaking Bad',
-        posterUrl: 'https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg',
-        year: '2008-2013',
-        mediaType: 'tv',
-        rating: 9.5,
-        seasons: 5,
-        network: 'AMC',
-        watched: true,
-        favorite: true
-      },
-      {
-        id: 3,
-        title: 'The Dark Knight',
-        posterUrl: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
-        year: '2008',
-        mediaType: 'movie',
-        rating: 9.0,
-        runtime: 152,
-        director: 'Christopher Nolan',
-        watched: true,
-        favorite: false
-      },
-      {
-        id: 4,
-        title: 'Stranger Things',
-        posterUrl: 'https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg',
-        year: '2016-Present',
-        mediaType: 'tv',
-        rating: 8.7,
-        seasons: 4,
-        network: 'Netflix',
-        watched: false,
-        favorite: false
-      }
-    ];
-  }
-
-  filterItems(filter: 'all' | 'movies' | 'tvshows'): void {
+  
+  // Apply filter to watchlist items
+  filterItems(filter: 'all' | 'movies' | 'tvshows' | 'favorites' | 'watched' | 'unwatched'): void {
     this.activeFilter = filter;
-    
-    if (filter === 'all') {
-      this.filteredItems = [...this.watchlistItems];
-    } else if (filter === 'movies') {
-      this.filteredItems = this.watchlistItems.filter(item => item.mediaType === 'movie');
+    this.applyFilterAndSort();
+  }
+  
+  // Change sort option
+  setSortOption(option: 'dateAdded' | 'title' | 'rating'): void {
+    if (this.sortOption === option) {
+      // Toggle direction if same option selected
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
-      this.filteredItems = this.watchlistItems.filter(item => item.mediaType === 'tv');
+      this.sortOption = option;
+      // Default to descending for rating and date, ascending for title
+      this.sortDirection = option === 'title' ? 'asc' : 'desc';
     }
+    this.applyFilterAndSort();
   }
-
-  removeFromWatchlist(id: number): void {
-    this.watchlistItems = this.watchlistItems.filter(item => item.id !== id);
-    this.filterItems(this.activeFilter); // Reapply filter
-  }
-
-  toggleFavorite(id: number): void {
-    const item = this.watchlistItems.find(item => item.id === id);
-    if (item) {
-      item.favorite = !item.favorite;
+  
+  // Apply both filter and sort
+  private applyFilterAndSort(): void {
+    // First filter
+    switch (this.activeFilter) {
+      case 'all':
+        this.filteredItems = [...this.watchlistItems];
+        break;
+      case 'movies':
+        this.filteredItems = this.watchlistItems.filter(item => item.mediaType === 'movie');
+        break;
+      case 'tvshows':
+        this.filteredItems = this.watchlistItems.filter(item => item.mediaType === 'tv');
+        break;
+      case 'favorites':
+        this.filteredItems = this.watchlistItems.filter(item => item.favorite);
+        break;
+      case 'watched':
+        this.filteredItems = this.watchlistItems.filter(item => item.watched);
+        break;
+      case 'unwatched':
+        this.filteredItems = this.watchlistItems.filter(item => !item.watched);
+        break;
     }
+    
+    // Then sort
+    this.sortItems();
   }
-
-  toggleWatched(id: number): void {
-    const item = this.watchlistItems.find(item => item.id === id);
-    if (item) {
-      item.watched = !item.watched;
-    }
+  
+  // Sort filtered items
+  private sortItems(): void {
+    this.filteredItems.sort((a, b) => {
+      let comparison = 0;
+      
+      switch (this.sortOption) {
+        case 'dateAdded':
+          comparison = a.dateAdded - b.dateAdded;
+          break;
+        case 'title':
+          comparison = a.title.localeCompare(b.title);
+          break;
+        case 'rating':
+          const ratingA = a.rating || 0;
+          const ratingB = b.rating || 0;
+          comparison = ratingA - ratingB;
+          break;
+      }
+      
+      // Reverse if descending
+      return this.sortDirection === 'desc' ? -comparison : comparison;
+    });
   }
-
+  
+  // Remove item from watchlist
+  removeFromWatchlist(id: number, mediaType: 'movie' | 'tv'): void {
+    this.watchlistService.removeFromWatchlist(id, mediaType);
+  }
+  
+  // Toggle favorite status
+  toggleFavorite(id: number, mediaType: 'movie' | 'tv'): void {
+    this.watchlistService.toggleFavorite(id, mediaType);
+  }
+  
+  // Toggle watched status
+  toggleWatched(id: number, mediaType: 'movie' | 'tv'): void {
+    this.watchlistService.toggleWatched(id, mediaType);
+  }
+  
+  // Get text for watch action button
   getWatchActionText(item: WatchlistItem): string {
     return item.watched ? 'Watched' : 'Mark as Watched';
   }
-
+  
+  // Check if item is a movie
   isMovie(item: WatchlistItem): boolean {
     return item.mediaType === 'movie';
   }
-
+  
+  // Check if item is a TV show
   isTvShow(item: WatchlistItem): boolean {
     return item.mediaType === 'tv';
+  }
+  
+  // Get active class for filter buttons
+  getFilterClass(filter: string): string {
+    return this.activeFilter === filter ? 'active-filter' : '';
+  }
+  
+  // Get active class for sort buttons
+  getSortClass(option: string): string {
+    if (this.sortOption === option) {
+      return this.sortDirection === 'asc' ? 'active-sort asc' : 'active-sort desc';
+    }
+    return '';
   }
 }

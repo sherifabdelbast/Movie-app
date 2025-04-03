@@ -5,7 +5,7 @@ import { WatchListComponent} from './watch-list/watch-list.component';
 
 @Component({
   selector: 'app-root',
-  imports: [FooterComponent , RouterOutlet, ],
+  imports: [FooterComponent , RouterOutlet ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
