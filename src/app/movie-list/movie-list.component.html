@@ -3,11 +3,11 @@
 
   <div class="flex gap-4 overflow-x-auto whitespace-nowrap custom-scrollbar">
     @for (movie of movies; track $index) {
-      <div class="flex-shrink-0 w-48">
-        <app-movie-card [movieItem]="movie"></app-movie-card>
-      </div>
+    <div class="flex-shrink-0 w-48">
+      <app-movie-card [movieItem]="movie"></app-movie-card>
+    </div>
     } @empty {
-      <p>No movies found</p>
+    <p>No movies found</p>
     }
   </div>
 </div>

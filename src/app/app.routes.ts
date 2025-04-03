@@ -3,6 +3,7 @@ import { LoginComponent } from "./login/login.component";
 import { MovieListComponent } from "./movie-list/movie-list.component";
 import { RegisterComponent } from "./register/register.component";
 import { MovieListPaginationComponent } from "./movie-list-pagination/movie-list-pagination.component";
+import { MovieDetailsComponent } from "./movie-details/movie-details.component";
 export const routes: Routes = [
 
 {
@@ -25,5 +26,10 @@ export const routes: Routes = [
   component : MovieListPaginationComponent,
   title : "Movies"
 },
+{
+  path: "movie-details/:id",
+  component: MovieDetailsComponent,
+  title: "Movie details"
+}
 
 ];
