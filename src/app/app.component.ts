@@ -1,10 +1,13 @@
+// app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FooterComponent  } from './footer/footer.component';
-import { WatchListComponent} from './watch-list/watch-list.component';
+import { NavbarComponent } from './navbar/navbar.component';
+
 
 @Component({
   selector: 'app-root',
+    standalone: true, // Make sure this line is present
+
   imports: [FooterComponent , RouterOutlet ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -12,3 +15,5 @@ import { WatchListComponent} from './watch-list/watch-list.component';
 export class AppComponent {
   title = 'movie-app';
 }
+
+
