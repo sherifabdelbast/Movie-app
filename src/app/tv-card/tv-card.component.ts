@@ -23,11 +23,18 @@ export class TvCardComponent {
   toggleFavorite(event: Event) {
     event.stopPropagation(); // Prevent card click event
     this.favorite.emit(this.tvShow.id);
+    console.log('Added to favorite:', this.tvShow.id);
   }
 
   formatDate(dateString: string | null): string {
     if (!dateString) return 'TBA';
     const date = new Date(dateString);
     return isNaN(date.getTime()) ? 'Invalid Date' : date.getFullYear().toString();
+  }
+
+  addToWishlist(event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    // Add your wishlist logic here
+    console.log('Added to wishlist:', this.tvShow.id);
   }
 }

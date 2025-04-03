@@ -1,6 +1,6 @@
 // tv-show-details.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, Output, EventEmitter } from '@angular/core';
 import { TvShowService } from '../services/tv-show.service';
 import { TvShow } from '../models/tvshow.interface';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -17,6 +17,8 @@ export class TvShowDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private tvShowService = inject(TvShowService);
+  
+  @Output() favorite = new EventEmitter<number>();
   
   tvShow?: TvShow;
   isLoading = true;
@@ -46,5 +48,21 @@ export class TvShowDetailsComponent implements OnInit {
   
   goBack() {
     this.router.navigate(['/tv-shows']);
+  }
+  
+  toggleFavorite(event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    if (this.tvShow) {
+      this.favorite.emit(this.tvShow.id);
+      console.log('Added to favorite:', this.tvShow.id);
+    }
+  }
+
+  addToWishlist(event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    // Add your wishlist logic here
+    if (this.tvShow) {
+      console.log('Added to wishlist:', this.tvShow.id);
+    }
   }
 }
