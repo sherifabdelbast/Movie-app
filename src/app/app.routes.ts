@@ -20,9 +20,10 @@ export const routes: Routes = [
     ],
   },
   { path: '', redirectTo: '/tv-shows', pathMatch: 'full' },
-  { path: 'watchlist', component: WatchListComponent },
-  { path: 'search-results', component: SearchResultsComponent, title: 'Search Results' },
 
+  {path: 'watchlist', component: WatchListComponent},
+  // إعادة التوجيه للصفحة الرئيسية
+ { path: 'search-results', component: SearchResultsComponent, title: 'Search Results' },
 
 
 
