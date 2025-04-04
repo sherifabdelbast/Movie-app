@@ -6,7 +6,6 @@ import { RegisterComponent } from "./register/register.component";
 import { MovieListPaginationComponent } from "./movie-list-pagination/movie-list-pagination.component";
 import { MovieDetailsComponent } from "./movie-details/movie-details.component";
 import { WatchListComponent } from './watch-list/watch-list.component';
-import { TvCardComponent } from './tv-card/tv-card.component';
 import { TvShowListComponent } from './tv-show-list/tv-show-list.component';
 import { TvShowDetailsComponent } from './tv-show-details/tv-show-details.component';
 
@@ -21,11 +20,11 @@ export const routes: Routes = [
   },
     {path: 'watchlist', component: WatchListComponent},
 
-// {
-//   path: "",
-//   component : MovieListComponent,
-//   title : "Home"
-// },
+{
+  path: "",
+  component : MovieListComponent,
+  title : "Home"
+},
 {
   path: "login",
   component : LoginComponent,

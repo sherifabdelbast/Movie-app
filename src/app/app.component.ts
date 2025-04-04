@@ -1,10 +1,8 @@
-// app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastComponent } from './toast/toast.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-
 @Component({
   selector: 'app-root',
   standalone: true,
