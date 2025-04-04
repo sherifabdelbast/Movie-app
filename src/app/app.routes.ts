@@ -15,11 +15,11 @@ export const routes: Routes = [
     ]
   },
   { path: '', redirectTo: '/tv-shows', pathMatch: 'full' },
-    {path: 'watchlist', component: WatchListComponent},
+  {path: 'watchlist', component: WatchListComponent},
   // إعادة التوجيه للصفحة الرئيسية
  
   // Add 404 route
   // { path: '**', component: NotFoundComponent }
 
 
-
+];
