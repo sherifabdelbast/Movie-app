@@ -12,9 +12,23 @@ export class MovieListService {
 
   constructor(private http: HttpClient) { }
 
+  // Your existing method
   getMoviesList(page: number = 1): Observable<MovieInterface> {
     return this.http.get<MovieInterface>(
       `${this.baseUrl}/movie/now_playing?api_key=${this.apiKey}&page=${page}`
+    );
+  }
+
+  // Add the missing methods that are called in HomeComponent
+  getTrendingMovies(page: number = 1): Observable<MovieInterface> {
+    return this.http.get<MovieInterface>(
+      `${this.baseUrl}/trending/movie/week?api_key=${this.apiKey}&page=${page}`
+    );
+  }
+
+  getTopRatedMovies(page: number = 1): Observable<MovieInterface> {
+    return this.http.get<MovieInterface>(
+      `${this.baseUrl}/movie/top_rated?api_key=${this.apiKey}&page=${page}`
     );
   }
 }
