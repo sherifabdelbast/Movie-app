@@ -112,9 +112,7 @@ import { switchMap, tap } from 'rxjs/operators';
     </div>
   `,
   styles: [`
-    .pb-2\/3 {
-      padding-bottom: 150%;
-    }
+   
   `]
 })
 export class SearchResultsComponent implements OnInit {
