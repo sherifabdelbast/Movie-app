@@ -9,7 +9,11 @@ import { TvCardComponent } from './tv-card/tv-card.component';
 import { TvShowListComponent } from './tv-show-list/tv-show-list.component';
 import { TvShowDetailsComponent } from './tv-show-details/tv-show-details.component';
 import { WatchListComponent } from './watch-list/watch-list.component';
+<<<<<<< HEAD
 import { HomeComponent } from './home/home.component';
+=======
+import { SearchResultsComponent } from './search-result/search-result.component';
+>>>>>>> bf359891509b137b0e421b35b9a14f17ef0eac68
 
 export const routes: Routes = [
   {
@@ -21,6 +25,7 @@ export const routes: Routes = [
   },
  
   { path: 'watchlist', component: WatchListComponent },
+  { path: 'search-results', component: SearchResultsComponent, title: 'Search Results' },
 
   {
     path: '',
