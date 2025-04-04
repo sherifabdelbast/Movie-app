@@ -24,7 +24,7 @@ export class MovieCardComponent {
   ) {}
   
   moveToMovieDetails() {
-    this.router.navigate(['/movies', this.movieItem.id]);
+    this.router.navigate(['/movie-details', this.movieItem.id]);
   }
   
   toggleFavorite(event: Event) {
@@ -75,17 +75,7 @@ export class MovieCardComponent {
       console.log('Already in watchlist:', this.movieItem.id);
     }
   }
-  
-  // Helper method to get director if available
-  // private getDirector(movie: MovieInterface): string | undefined {
-  //   if (movie.credits && movie.credits.crew) {
-  //     const director = movie.credits.crew.find(person => person.job === 'Director');
-  //     return director ? director.name : undefined;
-  //   }
-  //   return undefined;
-  // }
-  
-  // Check if the movie is already in the watchlist
+
   isInWatchlist(): boolean {
     return this.watchlistService.isInWatchlist(this.movieItem.id, 'movie');
   }

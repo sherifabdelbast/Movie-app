@@ -1,5 +1,5 @@
 <!-- movie-card.component.html -->
-<div (click)="moveToMovieDetails()" class="cursor-pointer group transition-all duration-300 h-full">
+<div (click)="moveToMovieDetails()" class="cursor-pointer group mb-7 transition-all duration-300 h-full">
   <div class="relative rounded-lg overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300">
     <!-- Poster image -->
     <img [src]="'https://image.tmdb.org/t/p/w500/' + (movieItem.poster_path || '')" [alt]="movieItem.title + ' Poster'"
