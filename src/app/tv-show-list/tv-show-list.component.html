@@ -4,20 +4,7 @@
     <h1 class="text-3xl font-bold text-gray-800">Popular TV Shows</h1>
     
     <div class="flex gap-3">
-      <button 
-        (click)="filterShows('today')" 
-        class="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200"
-        [ngClass]="activeFilter === 'today' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-      >
-        Today
-      </button>
-      <button 
-        (click)="filterShows('week')" 
-        class="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200"
-        [ngClass]="activeFilter === 'week' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-      >
-        This Week
-      </button>
+   
       <button 
         (click)="filterShows('all')" 
         class="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200"

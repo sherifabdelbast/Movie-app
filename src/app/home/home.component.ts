@@ -3,14 +3,15 @@ import { MovieListService } from '../services/movie-list.service';
 import { TvShowService } from '../services/tv-show.service';
 import { MovieInterface } from '../models/movie.interface';
 import { MovieListComponent } from '../movie-list/movie-list.component';
-import { TvShowListComponent } from '../tv-show-list/tv-show-list.component';
+import { TvShowScrollableComponent } from '../tv-show-scrollable/tv-show-scrollable.component';
+import { TeamComponent } from "../team/team.component";
 import { TvShow } from '../models/tvshow.interface';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MovieListComponent, TvShowListComponent ,RouterLink],
+  imports: [MovieListComponent, TvShowScrollableComponent ,RouterLink , TeamComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

@@ -22,14 +22,7 @@
     </div>
   </div>
   
-  <!-- Trending Movies Section -->
-  <section class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900">Trending Movies</h2>
-      <a routerLink="/movies" class="text-red-600 hover:text-red-700 font-medium">View All</a>
-    </div>
-    <app-movie-list  ></app-movie-list>
-  </section>
+
   
   <!-- Top Rated Section -->
   <section class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
@@ -39,67 +32,16 @@
     </div>
     <app-movie-list ></app-movie-list>
   </section>
-  
+
   <!-- Popular TV Shows Section -->
   <section class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-bold text-gray-900">Popular TV Shows</h2>
       <a routerLink="/tv-shows" class="text-red-600 hover:text-red-700 font-medium">View All</a>
     </div>
-    <app-tv-show-list ></app-tv-show-list>
+    <app-tv-show-scrollable ></app-tv-show-scrollable>
   </section>
   
   
   <!-- Team Section -->
-  <section class="bg-gray-100 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-900">Meet Our Team</h2>
-        <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-          We're a group of passionate developers dedicated to creating the best movie browsing experience.
-        </p>
-      </div>
-      
-      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        <!-- Team Member 1 -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="h-48 bg-gray-300"></div>
-          <div class="p-6">
-            <h3 class="text-lg font-medium text-gray-900">Jane Doe</h3>
-            <p class="text-gray-600">Frontend Developer</p>
-            <p class="mt-2 text-gray-500">Responsible for UI/UX implementation and responsive design.</p>
-          </div>
-        </div>
-        
-        <!-- Team Member 2 -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="h-48 bg-gray-300"></div>
-          <div class="p-6">
-            <h3 class="text-lg font-medium text-gray-900">John Smith</h3>
-            <p class="text-gray-600">Backend Developer</p>
-            <p class="mt-2 text-gray-500">Works on API integration and data management.</p>
-          </div>
-        </div>
-        
-        <!-- Team Member 3 -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="h-48 bg-gray-300"></div>
-          <div class="p-6">
-            <h3 class="text-lg font-medium text-gray-900">Emily Johnson</h3>
-            <p class="text-gray-600">UX Designer</p>
-            <p class="mt-2 text-gray-500">Creates intuitive user flows and engaging visual elements.</p>
-          </div>
-        </div>
-        
-        <!-- Team Member 4 -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="h-48 bg-gray-300"></div>
-          <div class="p-6">
-            <h3 class="text-lg font-medium text-gray-900">Michael Brown</h3>
-            <p class="text-gray-600">Project Manager</p>
-            <p class="mt-2 text-gray-500">Coordinates team efforts and ensures timely delivery.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+ <app-team></app-team>

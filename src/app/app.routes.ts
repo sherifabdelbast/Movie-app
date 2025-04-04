@@ -17,13 +17,17 @@ export const routes: Routes = [
     path: 'tv-shows',
     children: [
 
-      { path: '', component: TvShowListComponent }, // القائمة الرئيسية
+      { path: '', component: TvShowListComponent },
+
       { path: ':id', component: TvShowDetailsComponent }, // التفاصيل
     ],
   },
+
  
   { path: 'watchlist', component: WatchListComponent },
   { path: 'search-results', component: SearchResultsComponent, title: 'Search Results' },
+
+
 
 
   {
