@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { LoginComponent } from "./login/login.component";
 import { MovieListComponent } from "./movie-list/movie-list.component";
 import { RegisterComponent } from "./register/register.component";
@@ -10,10 +9,10 @@ import { TvShowListComponent } from './tv-show-list/tv-show-list.component';
 import { TvShowDetailsComponent } from './tv-show-details/tv-show-details.component';
 
 export const routes: Routes = [
-  
-  { 
+  {
     path: 'tv-shows',
     children: [
+
       { path: '', component: TvShowListComponent }, 
       { path: ':id', component: TvShowDetailsComponent } 
     ]
@@ -49,10 +48,5 @@ export const routes: Routes = [
   component: WatchListComponent,
   title: "Watchlist"
 }
+
 ];
-
-
-
-
-
-

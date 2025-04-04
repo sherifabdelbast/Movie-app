@@ -66,12 +66,12 @@ export class MovieCardComponent {
       this.watchlistService.addToWatchlist(watchlistItem);
       
       // Show success toast
-      this.toastService.show(`"${this.movieItem.title}" تمت إضافته إلى قائمة المشاهدة`, 'success');
+      this.toastService.show(`"${this.movieItem.title}" Added to watch list`, 'success');
       
       console.log('Added to watchlist:', this.movieItem.id);
     } else {
       // If already in watchlist, show info message
-      this.toastService.show(`"${this.movieItem.title}" موجود بالفعل في قائمة المشاهدة`, 'info');
+      this.toastService.show(`"${this.movieItem.title}" Already in watch list`, 'info');
       console.log('Already in watchlist:', this.movieItem.id);
     }
   }
