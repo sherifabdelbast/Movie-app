@@ -1,33 +1,92 @@
-import { Component, Input, Output, EventEmitter} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MovieInterface } from '../models/movie.interface';
+import { WatchlistItem } from '../models/watchlist-item.interface';
+import { ToastService } from '../services/toastservice.service';
+import { WatchlistService } from '../services/watchlist.service';
+
 @Component({
   selector: 'app-movie-card',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.css'
 })
 export class MovieCardComponent {
-
-  @Input() movieItem !: MovieInterface;
-  @Output() sendToParent = new EventEmitter<number>();
+  @Input() movieItem!: MovieInterface;
   @Output() favorite = new EventEmitter<number>();
-
-  constructor(private router: Router) {}
-
+  
+  constructor(
+    private router: Router,
+    private watchlistService: WatchlistService,
+    private toastService: ToastService
+  ) {}
+  
   moveToMovieDetails() {
-    this.router.navigate(['/movie-details',this.movieItem.id]);
+    this.router.navigate(['/movies', this.movieItem.id]);
   }
+  
   toggleFavorite(event: Event) {
-    event.stopPropagation(); 
+    event.stopPropagation(); // Prevent card click event
     this.favorite.emit(this.movieItem.id);
     console.log('Added to favorite:', this.movieItem.id);
   }
 
-
-  addToWishlist(event: Event) {
-    event.stopPropagation(); 
-    console.log('Added to wishlist:', this.movieItem.id);
+  formatDate(dateString: string | null): string {
+    if (!dateString) return 'TBA';
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? 'Invalid Date' : date.getFullYear().toString();
   }
 
+  addToWishlist(event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    
+    // Check if the item is already in the watchlist
+    const isAlreadyInWatchlist = this.watchlistService.isInWatchlist(this.movieItem.id, 'movie');
+    
+    if (!isAlreadyInWatchlist) {
+      // Create a watchlist item from the movie data
+      const watchlistItem: WatchlistItem = {
+        id: this.movieItem.id,
+        title: this.movieItem.original_title || this.movieItem.title,
+        posterUrl: this.movieItem.poster_path ? `https://image.tmdb.org/t/p/w500/${this.movieItem.poster_path}` : '',
+        year: this.formatDate(this.movieItem.release_date),
+        mediaType: 'movie',
+        rating: this.movieItem.vote_average,
+        overview: this.movieItem.overview,
+        // runtime: this.movieItem.runtime,
+        // director: this.getDirector(this.movieItem),
+        watched: false,
+        favorite: false,
+        dateAdded: Date.now()
+      };
+      
+      // Add to watchlist
+      this.watchlistService.addToWatchlist(watchlistItem);
+      
+      // Show success toast
+      this.toastService.show(`"${this.movieItem.title}" تمت إضافته إلى قائمة المشاهدة`, 'success');
+      
+      console.log('Added to watchlist:', this.movieItem.id);
+    } else {
+      // If already in watchlist, show info message
+      this.toastService.show(`"${this.movieItem.title}" موجود بالفعل في قائمة المشاهدة`, 'info');
+      console.log('Already in watchlist:', this.movieItem.id);
+    }
+  }
+  
+  // Helper method to get director if available
+  // private getDirector(movie: MovieInterface): string | undefined {
+  //   if (movie.credits && movie.credits.crew) {
+  //     const director = movie.credits.crew.find(person => person.job === 'Director');
+  //     return director ? director.name : undefined;
+  //   }
+  //   return undefined;
+  // }
+  
+  // Check if the movie is already in the watchlist
+  isInWatchlist(): boolean {
+    return this.watchlistService.isInWatchlist(this.movieItem.id, 'movie');
+  }
 }
