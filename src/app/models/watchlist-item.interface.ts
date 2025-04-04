@@ -1,5 +1,5 @@
-// src/app/models/watchlist-item.interface.ts
 export interface WatchlistItem {
+
   id: number;
   title: string;
   posterUrl: string;
@@ -7,14 +7,15 @@ export interface WatchlistItem {
   mediaType: 'movie' | 'tv';
   rating?: number;
   overview?: string;
-  // Movie specific properties
+  // ? Movie specific properties
   runtime?: number;
   director?: string;
-  // TV specific properties
+  // ? TV specific properties
   seasons?: number;
   network?: string;
-  // Watch status
+  // ? Watch status
   watched: boolean;
   favorite: boolean;
-  dateAdded: number; // timestamp
+  dateAdded: number; 
 }
+

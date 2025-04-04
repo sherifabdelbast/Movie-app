@@ -16,9 +16,7 @@
             "outputPath": "dist/movie-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -27,6 +25,7 @@
               }
             ],
             "styles": [
+              "./node_modules/tailwindcss/tailwind.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -73,10 +72,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -95,5 +91,6 @@
   },
   "cli": {
     "analytics": "e5c25e4a-1f69-4b3f-a3bf-f370b1dc5096"
+
   }
 }

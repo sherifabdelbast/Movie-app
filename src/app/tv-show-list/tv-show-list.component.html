@@ -1,0 +1,99 @@
+<!-- tv-show-list.component.html -->
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">Popular TV Shows</h1>
+    
+    <div class="flex gap-3">
+      <button 
+        (click)="filterShows('today')" 
+        class="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200"
+        [ngClass]="activeFilter === 'today' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+      >
+        Today
+      </button>
+      <button 
+        (click)="filterShows('week')" 
+        class="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200"
+        [ngClass]="activeFilter === 'week' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+      >
+        This Week
+      </button>
+      <button 
+        (click)="filterShows('all')" 
+        class="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200"
+        [ngClass]="activeFilter === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+      >
+        All Shows
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  @if (isLoading) {
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+      @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+        <div class="animate-pulse">
+          <div class="bg-gray-200 rounded-lg h-64 mb-2"></div>
+          <div class="bg-gray-200 h-4 rounded w-3/4 mb-2"></div>
+          <div class="bg-gray-200 h-4 rounded w-1/2"></div>
+        </div>
+      }
+    </div>
+  } @else if (tvShows.length === 0) {
+    <div class="text-center py-16">
+      <div class="text-5xl mb-4">🎬</div>
+      <h3 class="text-xl font-semibold text-gray-700 mb-2">No shows found</h3>
+      <p class="text-gray-500">Try changing your filter or check back later</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+      @for (tvShow of tvShows; track tvShow.id) {
+        <app-tv-card [tvShow]="tvShow"></app-tv-card>
+      }
+    </div>
+    
+    <!-- Pagination Controls -->
+    <div class="flex items-center justify-between mt-8 border-t pt-6">
+      <!-- Results counter -->
+      <div class="text-sm text-gray-600">
+        Showing page {{ currentPage }} of {{ totalPages }} ({{ totalResults }} shows)
+      </div>
+      
+      <!-- Pagination buttons -->
+      <div class="flex items-center space-x-2">
+        <!-- Previous page button -->
+        <button 
+          (click)="previousPage()" 
+          [disabled]="currentPage === 1"
+          class="px-3 py-2 rounded-md border text-sm font-medium transition-colors duration-200"
+          [ngClass]="currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'"
+        >
+          Previous
+        </button>
+        
+        <!-- Page numbers (show a limited range) -->
+        <div class="flex items-center">
+          @for (page of getVisiblePageNumbers(); track page) {
+            <button 
+              (click)="goToPage(page)"
+              class="w-10 h-10 mx-1 flex items-center justify-center rounded-md text-sm font-medium transition-colors duration-200"
+              [ngClass]="page === currentPage ? 'bg-indigo-600 text-white' : 'bg-white hover:bg-gray-50 text-gray-700'"
+            >
+              {{ page }}
+            </button>
+          }
+        </div>
+        
+        <!-- Next page button -->
+        <button 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages"
+          class="px-3 py-2 rounded-md border text-sm font-medium transition-colors duration-200"
+          [ngClass]="currentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  }
+</div>
