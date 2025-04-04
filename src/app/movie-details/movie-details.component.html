@@ -1,302 +1,248 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobland | The Movie Database</title>
-</head>
-<body class="bg-white text-black font-sans leading-normal">
-  <!-- Hero Section with Backdrop -->
-  <section class="relative">
-    <div class="h-96 bg-cover bg-center relative" style="background-image: url('/api/placeholder/1200/600');">
-      <!-- Gradient overlays -->
-      <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-transparent to-gray-900"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+@if (isLoading) {
+  <div class="flex justify-center items-center h-96">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
+  </div>
+}
 
-    <div class="container mx-auto px-4">
-      <div class="relative -mt-32 pb-10">
-        <div class="flex flex-col md:flex-row">
-          <div class="w-full md:w-1/4">
-            <img src="/api/placeholder/300/450" alt="Mobland Poster" class="w-full rounded-lg shadow-lg">
-          </div>
+@if (!isLoading) {
+  <div class="bg-white text-black font-sans leading-normal">
+    <!-- Hero Section with Backdrop -->
+    <section class="relative">
+      <div class="h-96 bg-cover bg-center relative" [style.background-image]="'url(' + getBackdropUrl(movieDetails.backdrop_path) + ')'">
+        <!-- Gradient overlays -->
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-transparent to-gray-900"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+      </div>
 
-          <div class="mt-6 md:mt-0 md:w-3/4 md:pl-10">
-            <div class="flex flex-col md:flex-row md:items-center">
-              <h1 class="text-4xl font-bold">Mobland <span class="text-gray-400 font-normal">(2024)</span></h1>
-              <div class="mt-2 md:mt-0 md:ml-4 bg-gray-800 px-2 py-1 rounded text-sm text-white">
-                TV Series
-              </div>
+      <div class="container mx-auto px-4">
+        <div class="relative -mt-32 pb-10">
+          <div class="flex flex-col md:flex-row">
+            <div class="w-full md:w-1/4">
+              <img [src]="getImageUrl(movieDetails.poster_path)" [alt]="movieDetails.title + ' Poster'" class="w-full rounded-lg shadow-lg">
             </div>
 
-            <div class="flex items-center mt-4 gap-6">
-              <div class="flex items-center">
-                <div class="h-16 w-16 bg-gray-800 rounded-full flex items-center justify-center border-4 border-green-500 text-white">
-                  <span class="font-bold text-lg">75%</span>
+            <div class="mt-6 md:mt-0 md:w-3/4 md:pl-10">
+              <div class="flex flex-col md:flex-row md:items-center">
+                <h1 class="text-4xl font-bold">{{ movieDetails.title }} <span class="text-gray-400 font-normal">({{ releaseYear }})</span></h1>
+                <div class="mt-2 md:mt-0 md:ml-4 bg-gray-800 px-2 py-1 rounded text-sm text-white">
+                  {{ movieDetails.media_type === 'tv' ? 'TV Series' : 'Movie' }}
                 </div>
-                <span class="ml-2 text-sm">User<br>Score</span>
               </div>
 
-              <div class="flex gap-4">
-                <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
-                  <i class="fas fa-list"></i>
-                </button>
-                <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
-                  <i class="fas fa-heart"></i>
-                </button>
-                <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
-                  <i class="fas fa-bookmark"></i>
-                </button>
-                <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
-                  <i class="fas fa-star"></i>
-                </button>
+              <div class="flex items-center mt-4 gap-6">
+                <div class="flex items-center">
+                  <div class="h-16 w-16 bg-gray-800 rounded-full flex items-center justify-center border-4 border-green-500 text-white">
+                    <span class="font-bold text-lg">{{ getVotePercentage(movieDetails.vote_average) }}</span>
+                  </div>
+                  <span class="ml-2 text-sm">User<br>Score</span>
+                </div>
+
+                <div class="flex gap-4">
+                  <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
+                    <i class="fas fa-list"></i>
+                  </button>
+                  <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
+                    <i class="fas fa-heart"></i>
+                  </button>
+                  <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
+                    <i class="fas fa-bookmark"></i>
+                  </button>
+                  <button class="h-10 w-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 text-white">
+                    <i class="fas fa-star"></i>
+                  </button>
+                </div>
+
+                @if (movieDetails.videos?.results?.length > 0) {
+                  <button class="hidden md:flex items-center gap-2 hover:text-blue-400">
+                    <i class="fas fa-play"></i>
+                    <span>Play Trailer</span>
+                  </button>
+                }
               </div>
 
-              <button class="hidden md:flex items-center gap-2 hover:text-blue-400">
-                <i class="fas fa-play"></i>
-                <span>Play Trailer</span>
-              </button>
-            </div>
+              @if (movieDetails.tagline) {
+                <div class="italic text-gray-400 mt-6">{{ movieDetails.tagline }}</div>
+              }
 
-            <div class="italic text-gray-400 mt-6">Welcome to the criminal underworld.</div>
+              <h3 class="font-bold mt-4">Overview</h3>
+              <p class="mt-2">{{ movieDetails.overview }}</p>
 
-            <h3 class="font-bold mt-4">Overview</h3>
-            <p class="mt-2">
-              Set in the brutal and competitive landscape of the American mafia, "Mobland" follows the rise of undercover FBI agent Max Romano as he infiltrates one of the most dangerous crime families in the country. As Max gets deeper into his role, the line between his true identity and his criminal persona begins to blur, threatening both his mission and his life. The series explores themes of loyalty, betrayal, and the moral compromises made in the pursuit of justice.
-            </p>
-
-            <div class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-6">
-              <div>
-                <h4 class="font-bold">Robert Sullivan</h4>
-                <p class="text-sm text-gray-400">Creator</p>
-              </div>
-              <div>
-                <h4 class="font-bold">Michael Garcia</h4>
-                <p class="text-sm text-gray-400">Creator</p>
+              <div class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-6">
+                @for (creator of getCreators(); track creator.name) {
+                  <div>
+                    <h4 class="font-bold">{{ creator.name }}</h4>
+                    <p class="text-sm text-gray-400">Creator</p>
+                  </div>
+                }
+                @for (director of getDirectors(); track director.name) {
+                  <div>
+                    <h4 class="font-bold">{{ director.name }}</h4>
+                    <p class="text-sm text-gray-400">Director</p>
+                  </div>
+                }
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Cast Section -->
-  <section class="py-10 border-t border-gray-800">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold">Series Cast</h2>
-        <a href="#" class="text-blue-400 flex items-center hover:underline">
-          <span>Full Cast & Crew</span>
-          <i class="fas fa-arrow-right ml-2"></i>
-        </a>
-      </div>
-
-      <div class="overflow-x-auto pb-4">
-        <div class="flex gap-4 min-w-min">
-          <!-- Cast Card 1 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-36 text-white">
-            <img src="/api/placeholder/138/175" alt="Actor 1">
-            <div class="p-3">
-              <h4 class="font-bold text-sm">Daniel Martinez</h4>
-              <p class="text-gray-400 text-xs">Max Romano</p>
-            </div>
+    <!-- Cast Section -->
+    @if (credits?.cast?.length > 0) {
+      <section class="py-10 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Series Cast</h2>
+            <a href="#" class="text-blue-400 flex items-center hover:underline">
+              <span>Full Cast & Crew</span>
+              <i class="fas fa-arrow-right ml-2"></i>
+            </a>
           </div>
 
-          <!-- Cast Card 2 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-36 text-white">
-            <img src="/api/placeholder/138/175" alt="Actor 2">
-            <div class="p-3">
-              <h4 class="font-bold text-sm">Sophia Romano</h4>
-              <p class="text-gray-400 text-xs">Elena Vitale</p>
-            </div>
-          </div>
-
-          <!-- Cast Card 3 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-36 text-white">
-            <img src="/api/placeholder/138/175" alt="Actor 3">
-            <div class="p-3">
-              <h4 class="font-bold text-sm">Robert DeNardi</h4>
-              <p class="text-gray-400 text-xs">Vincent Vitale</p>
-            </div>
-          </div>
-
-          <!-- Cast Card 4 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-36 text-white">
-            <img src="/api/placeholder/138/175" alt="Actor 4">
-            <div class="p-3">
-              <h4 class="font-bold text-sm">James Lee</h4>
-              <p class="text-gray-400 text-xs">Agent Williams</p>
-            </div>
-          </div>
-
-          <!-- Cast Card 5 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-36 text-white">
-            <img src="/api/placeholder/138/175" alt="Actor 5">
-            <div class="p-3">
-              <h4 class="font-bold text-sm">Maria Alvarez</h4>
-              <p class="text-gray-400 text-xs">Detective Reyes</p>
-            </div>
-          </div>
-
-          <!-- Cast Card 6 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-36 text-white">
-            <img src="/api/placeholder/138/175" alt="Actor 6">
-            <div class="p-3">
-              <h4 class="font-bold text-sm">Tony Black</h4>
-              <p class="text-gray-400 text-xs">Lorenzo</p>
+          <div class="overflow-x-auto pb-4">
+            <div class="flex gap-4 min-w-min">
+              <!-- Cast Cards -->
+              @for (actor of credits.cast.slice(0, 6); track actor.id) {
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-36 text-white">
+                  <img [src]="getImageUrl(actor.profile_path)" [alt]="actor.name">
+                  <div class="p-3">
+                    <h4 class="font-bold text-sm">{{ actor.name }}</h4>
+                    <p class="text-gray-400 text-xs">{{ actor.character }}</p>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
+    }
 
-  <!-- Current Season -->
-  <section class="py-10 border-t border-gray-800">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold">Current Season</h2>
-        <a href="#" class="text-blue-400 flex items-center hover:underline">
-          <span>View All Seasons</span>
-          <i class="fas fa-arrow-right ml-2"></i>
-        </a>
-      </div>
-
-      <div class="bg-gray-800 rounded-lg p-6 shadow-lg text-white">
-        <div class="flex flex-col md:flex-row">
-          <div class="md:w-1/6">
-            <img src="/api/placeholder/180/270" alt="Season 1" class="w-full rounded-lg">
+    <!-- Current Season - Only for TV shows -->
+    @if (movieDetails.media_type === 'tv' && movieDetails.seasons?.length > 0) {
+      <section class="py-10 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Current Season</h2>
+            <a href="#" class="text-blue-400 flex items-center hover:underline">
+              <span>View All Seasons</span>
+              <i class="fas fa-arrow-right ml-2"></i>
+            </a>
           </div>
 
-          <div class="mt-4 md:mt-0 md:w-5/6 md:pl-6">
-            <h3 class="text-xl font-bold">Season 1</h3>
-            <div class="text-gray-400 text-sm mb-4">2024 | 10 Episodes</div>
+          <div class="bg-gray-800 rounded-lg p-6 shadow-lg text-white">
+            <div class="flex flex-col md:flex-row">
+              <div class="md:w-1/6">
+                <img [src]="getImageUrl(movieDetails.seasons[movieDetails.seasons.length-1].poster_path)" alt="Current Season" class="w-full rounded-lg">
+              </div>
 
-            <p>
-              In the first season of Mobland, we follow FBI agent Max Romano as he assumes a new identity to infiltrate the powerful Vitale crime family. As he earns the trust of patriarch Vincent Vitale, Max finds himself increasingly entangled in the family's illegal operations and personal dynamics, especially when he develops feelings for Vincent's daughter, Elena. Meanwhile, a rival mob family threatens the delicate balance of power in the city.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+              <div class="mt-4 md:mt-0 md:w-5/6 md:pl-6">
+                <h3 class="text-xl font-bold">{{ movieDetails.seasons[movieDetails.seasons.length-1].name }}</h3>
+                <div class="text-gray-400 text-sm mb-4">
+                  {{ movieDetails.seasons[movieDetails.seasons.length-1].air_date | date:'yyyy' }} |
+                  {{ movieDetails.seasons[movieDetails.seasons.length-1].episode_count }} Episodes
+                </div>
 
-  <!-- Media Section -->
-  <section class="py-10 border-t border-gray-800">
-    <div class="container mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-6">Media</h2>
-
-      <div class="flex gap-6 mb-6">
-        <button class="font-medium pb-2 border-b-2 border-blue-400">Videos (12)</button>
-        <button class="font-medium pb-2 text-gray-400 hover:text-blue-400">Backdrops (8)</button>
-        <button class="font-medium pb-2 text-gray-400 hover:text-blue-400">Posters (4)</button>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Video 1 -->
-        <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg relative text-white">
-          <img src="/api/placeholder/533/300" alt="Trailer thumbnail">
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <button>
-              <i class="far fa-play-circle text-6xl"></i>
-            </button>
-          </div>
-          <div class="p-3">
-            <h4 class="font-bold">Official Trailer</h4>
-          </div>
-        </div>
-
-        <!-- Video 2 -->
-        <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg relative text-white">
-          <img src="/api/placeholder/533/300" alt="Teaser thumbnail">
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <button>
-              <i class="far fa-play-circle text-6xl"></i>
-            </button>
-          </div>
-          <div class="p-3">
-            <h4 class="font-bold">Character Teaser: Max Romano</h4>
-          </div>
-        </div>
-
-        <!-- Video 3 -->
-        <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg relative text-white">
-          <img src="/api/placeholder/533/300" alt="Behind the scenes thumbnail">
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <button>
-              <i class="far fa-play-circle text-6xl"></i>
-            </button>
-          </div>
-          <div class="p-3">
-            <h4 class="font-bold">Behind the Scenes</h4>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Recommendations -->
-  <section class="py-10 border-t border-gray-800">
-    <div class="container mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-6">Recommendations</h2>
-
-      <div class="overflow-x-auto pb-4">
-        <div class="flex gap-4 min-w-min">
-          <!-- Recommendation 1 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-64 text-white">
-            <div class="relative">
-              <img src="/api/placeholder/250/141" alt="Show 1">
-              <div class="absolute bottom-2 right-2 bg-gray-900 bg-opacity-75 rounded-full h-8 w-8 flex items-center justify-center">
-                <span class="text-xs">86%</span>
+                <p>{{ movieDetails.seasons[movieDetails.seasons.length-1].overview }}</p>
               </div>
             </div>
-            <div class="p-3">
-              <h4 class="font-bold">The Sopranos</h4>
-            </div>
+          </div>
+        </div>
+      </section>
+    }
+
+    <!-- Media Section -->
+    @if (movieDetails.videos?.results?.length > 0) {
+      <section class="py-10 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+          <h2 class="text-2xl font-bold mb-6">Media</h2>
+
+          <div class="flex gap-6 mb-6">
+            <button class="font-medium pb-2 border-b-2 border-blue-400">Videos ({{ movieDetails.videos.results.length }})</button>
+            <button class="font-medium pb-2 text-gray-400 hover:text-blue-400">Backdrops ({{ movieDetails.images?.backdrops?.length || 0 }})</button>
+            <button class="font-medium pb-2 text-gray-400 hover:text-blue-400">Posters ({{ movieDetails.images?.posters?.length || 0 }})</button>
           </div>
 
-          <!-- Recommendation 2 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-64 text-white">
-            <div class="relative">
-              <img src="/api/placeholder/250/141" alt="Show 2">
-              <div class="absolute bottom-2 right-2 bg-gray-900 bg-opacity-75 rounded-full h-8 w-8 flex items-center justify-center">
-                <span class="text-xs">92%</span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Videos -->
+            @for (video of movieDetails.videos.results.slice(0, 3); track video.id) {
+              <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg relative text-white">
+                <img [src]="'https://img.youtube.com/vi/' + video.key + '/hqdefault.jpg'" [alt]="video.name + ' thumbnail'">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <button>
+                    <i class="far fa-play-circle text-6xl"></i>
+                  </button>
+                </div>
+                <div class="p-3">
+                  <h4 class="font-bold">{{ video.name }}</h4>
+                </div>
               </div>
-            </div>
-            <div class="p-3">
-              <h4 class="font-bold">Boardwalk Empire</h4>
-            </div>
+            }
           </div>
+        </div>
+      </section>
+    }
 
-          <!-- Recommendation 3 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-64 text-white">
-            <div class="relative">
-              <img src="/api/placeholder/250/141" alt="Show 3">
-              <div class="absolute bottom-2 right-2 bg-gray-900 bg-opacity-75 rounded-full h-8 w-8 flex items-center justify-center">
-                <span class="text-xs">78%</span>
-              </div>
-            </div>
-            <div class="p-3">
-              <h4 class="font-bold">Peaky Blinders</h4>
-            </div>
-          </div>
+    <!-- Recommendations -->
+    @if (recommendations?.results?.length > 0) {
+      <section class="py-10 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+          <h2 class="text-2xl font-bold mb-6">Recommendations</h2>
 
-          <!-- Recommendation 4 -->
-          <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-64 text-white">
-            <div class="relative">
-              <img src="/api/placeholder/250/141" alt="Show 4">
-              <div class="absolute bottom-2 right-2 bg-gray-900 bg-opacity-75 rounded-full h-8 w-8 flex items-center justify-center">
-                <span class="text-xs">83%</span>
-              </div>
-            </div>
-            <div class="p-3">
-              <h4 class="font-bold">Narcos</h4>
+          <div class="overflow-x-auto pb-4">
+            <div class="flex gap-4 min-w-min">
+              <!-- Recommendations -->
+              @for (rec of recommendations.results.slice(0, 6); track rec.id) {
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg w-64 text-white">
+                  <div class="relative">
+                    <img [src]="getImageUrl(rec.backdrop_path)" [alt]="rec.title || rec.name">
+                    <div class="absolute bottom-2 right-2 bg-gray-900 bg-opacity-75 rounded-full h-8 w-8 flex items-center justify-center">
+                      <span class="text-xs">{{ getVotePercentage(rec.vote_average) }}</span>
+                    </div>
+                  </div>
+                  <div class="p-3">
+                    <h4 class="font-bold">{{ rec.title || rec.name }}</h4>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-</body>
-</html>
+      </section>
+    }
+
+    <!-- Reviews Section -->
+    @if (reviews?.results?.length > 0) {
+      <section class="py-10 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Reviews</h2>
+            @if (reviews.results.length > 2) {
+              <a href="#" class="text-blue-400 flex items-center hover:underline">
+                <span>Read All Reviews</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+              </a>
+            }
+          </div>
+
+          @for (review of reviews.results.slice(0, 2); track review.id) {
+            <div class="bg-gray-800 rounded-lg p-6 shadow-lg text-white mb-4">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center text-xl font-bold">
+                  {{ review.author.charAt(0).toUpperCase() }}
+                </div>
+                <div class="ml-4">
+                  <h4 class="font-bold">A review by {{ review.author }}</h4>
+                  <p class="text-gray-400 text-sm">Written on {{ review.created_at | date:'mediumDate' }}</p>
+                </div>
+              </div>
+              <p class="line-clamp-3">{{ review.content }}</p>
+              <button class="mt-4 text-blue-400 hover:underline">Read the full review</button>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  </div>
+}
