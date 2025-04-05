@@ -39,7 +39,7 @@ export class TvCardComponent {
     return isNaN(date.getTime()) ? 'Invalid Date' : date.getFullYear().toString();
   }
 
-  addToWishlist(event: Event) {
+  toggleWatchlist(event: Event) {
     event.stopPropagation(); // Prevent card click event
     
     // Check if the item is already in the watchlist
@@ -67,12 +67,12 @@ export class TvCardComponent {
       
       // Show success toast
       this.toastService.show(`"${this.tvShow.name}" تمت إضافته إلى قائمة المشاهدة`, 'success');
-      
-      console.log('Added to watchlist:', this.tvShow.id);
     } else {
-      // If already in watchlist, show info message and offer to navigate
-      this.toastService.show(`"${this.tvShow.name}" موجود بالفعل في قائمة المشاهدة`, 'info');
-      console.log('Already in watchlist:', this.tvShow.id);
+      // Remove from watchlist
+      this.watchlistService.removeFromWatchlist(this.tvShow.id, 'tv');
+      
+      // Show removed toast
+      this.toastService.show(`"${this.tvShow.name}" تمت إزالته من قائمة المشاهدة`, 'info');
     }
   }
   

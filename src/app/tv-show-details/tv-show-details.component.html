@@ -45,9 +45,9 @@
           <!-- Watchlist button with dynamic styling based on status -->
           <button 
             class="flex items-center justify-center h-8 w-8 rounded-full bg-white shadow-md hover:shadow-lg transition-colors duration-200"
-            [ngClass]="isInWatchlist() ? 'text-green-500' : 'text-blue-500'"
-            (click)="addToWishlist($event)" 
-            [attr.aria-label]="isInWatchlist() ? 'Already in watchlist' : 'Add to watchlist'">
+            [ngClass]="isInWatchlist() ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500'"
+            (click)="toggleWatchlist($event)" 
+            [attr.aria-label]="isInWatchlist() ? 'Remove from watchlist' : 'Add to watchlist'">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" 
                  [attr.fill]="isInWatchlist() ? 'currentColor' : 'none'" 
                  viewBox="0 0 24 24" 
