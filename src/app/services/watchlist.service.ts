@@ -9,13 +9,43 @@ import { WatchlistItem } from '../models/watchlist-item.interface';
 export class WatchlistService {
   private watchlistItems: WatchlistItem[] = [];
   private watchlistSubject = new BehaviorSubject<WatchlistItem[]>([]);
+  private favoritesCountSubject = new BehaviorSubject<number>(0);
   
+favoritesCount$ = this.favoritesCountSubject.asObservable();
   watchlist$ = this.watchlistSubject.asObservable();
   
   constructor() {
     this.loadWatchlist();
+    this.loadFavorites();
+    this.updateFavoritesCount();
+  }
+  private loadFavorites(): void {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      this.favorites = JSON.parse(savedFavorites);
+      this.updateFavoritesCount();
+    }
+  }
+  private saveFavorites(): void {
+    localStorage.setItem('favorites', JSON.stringify(this.favorites));
   }
   
+  private updateFavoritesCount(): void {
+    const count = this.favorites.length;
+    this.favoritesCountSubject.next(count);
+  }
+  addToFavorites(id: number): void {
+    if (!this.isFavorite(id)) {
+      this.favorites.push(id);
+      this.saveFavorites();
+      this.updateFavoritesCount();
+    }
+  }
+  removeFromFavorites(id: number): void {
+    this.favorites = this.favorites.filter(favId => favId !== id);
+    this.saveFavorites();
+    this.updateFavoritesCount();
+  }
   // Load watchlist from localStorage
   private loadWatchlist(): void {
     const savedWatchlist = localStorage.getItem('watchlist');
@@ -45,7 +75,12 @@ export class WatchlistService {
     );
     this.updateWatchlist();
   }
-  
+  private favorites: number[] = []; 
+    isFavorite(id: number): boolean {
+    return this.favorites.includes(id);
+  }
+
+
   // Toggle favorite status
   toggleFavorite(id: number, mediaType: 'movie' | 'tv'): void {
     const item = this.findItem(id, mediaType);

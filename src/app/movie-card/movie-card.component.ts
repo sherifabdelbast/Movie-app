@@ -17,6 +17,8 @@ export class MovieCardComponent {
   @Input() movieItem!: MovieInterface;
   @Output() favorite = new EventEmitter<number>();
   
+
+  isFavorite: boolean = false;
   constructor(
     private router: Router,
     private watchlistService: WatchlistService,
@@ -27,12 +29,6 @@ export class MovieCardComponent {
     this.router.navigate(['/movie-details', this.movieItem.id]);
   }
   
-  toggleFavorite(event: Event) {
-    event.stopPropagation(); // Prevent card click event
-    this.favorite.emit(this.movieItem.id);
-    console.log('Added to favorite:', this.movieItem.id);
-  }
-
   formatDate(dateString: string | null): string {
     if (!dateString) return 'TBA';
     const date = new Date(dateString);
@@ -40,13 +36,14 @@ export class MovieCardComponent {
   }
 
   addToWishlist(event: Event) {
-    event.stopPropagation(); // Prevent card click event
-    
-    // Check if the item is already in the watchlist
+    event.stopPropagation();
+  
     const isAlreadyInWatchlist = this.watchlistService.isInWatchlist(this.movieItem.id, 'movie');
-    
-    if (!isAlreadyInWatchlist) {
-      // Create a watchlist item from the movie data
+  
+    if (isAlreadyInWatchlist) {
+      this.watchlistService.removeFromWatchlist(this.movieItem.id, 'movie');
+      this.toastService.show(`"${this.movieItem.title}" removed from watch list`, 'info');
+    } else {
       const watchlistItem: WatchlistItem = {
         id: this.movieItem.id,
         title: this.movieItem.original_title || this.movieItem.title,
@@ -55,27 +52,35 @@ export class MovieCardComponent {
         mediaType: 'movie',
         rating: this.movieItem.vote_average,
         overview: this.movieItem.overview,
-        // runtime: this.movieItem.runtime,
-        // director: this.getDirector(this.movieItem),
         watched: false,
         favorite: false,
         dateAdded: Date.now()
       };
-      
-      // Add to watchlist
+  
       this.watchlistService.addToWatchlist(watchlistItem);
-      
-      // Show success toast
-      this.toastService.show(`"${this.movieItem.title}" Added to watch list`, 'success');
-      
-      console.log('Added to watchlist:', this.movieItem.id);
-    } else {
-      // If already in watchlist, show info message
-      this.toastService.show(`"${this.movieItem.title}" Already in watch list`, 'info');
-      console.log('Already in watchlist:', this.movieItem.id);
+      this.toastService.show(`"${this.movieItem.title}" added to watch list`, 'success');
     }
   }
+  
 
+  toggleFavorite(event: Event) {
+    event.stopPropagation();
+
+    this.isFavorite = !this.isFavorite; // تغيير الحالة
+    if (this.isFavorite) {
+      this.watchlistService.addToFavorites(this.movieItem.id);
+      this.toastService.show(`"${this.movieItem.title}" added to favorites`, 'success');
+    } else {
+      this.watchlistService.removeFromFavorites(this.movieItem.id);
+      this.toastService.show(`"${this.movieItem.title}" removed from favorites`, 'info');
+    }
+    
+  }
+
+  
+
+
+  
   isInWatchlist(): boolean {
     return this.watchlistService.isInWatchlist(this.movieItem.id, 'movie');
   }

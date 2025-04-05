@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { MovieDetailsApiService } from './../services/movie-details-api.service';
 import { forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { WatchlistService } from '../services/watchlist.service';
+import { ToastService } from '../services/toastservice.service';
+import { WatchlistItem } from '../models/watchlist-item.interface';
 
 @Component({
   selector: 'app-movie-details',
@@ -23,9 +26,54 @@ export class MovieDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieDetailsApiService,
-    private http: HttpClient
+    private http: HttpClient,
+    private watchlistService: WatchlistService, 
+    private toastService: ToastService
   ) {}
-
+  isInWatchlist(): boolean {
+    return this.watchlistService.isInWatchlist(parseInt(this.movieId), 'movie');
+  }
+  toggleWatchlist(event: Event): void {
+    event.stopPropagation();
+    
+    const isAlreadyInWatchlist = this.isInWatchlist();
+    
+    if (isAlreadyInWatchlist) {
+      this.watchlistService.removeFromWatchlist(parseInt(this.movieId), 'movie');
+      this.toastService.show(`"${this.movieDetails.title}" removed from watch list`, 'info');
+    } else {
+      const watchlistItem: WatchlistItem = {
+        id: parseInt(this.movieId),
+        title: this.movieDetails.original_title || this.movieDetails.title,
+        posterUrl: this.movieDetails.poster_path ? `https://image.tmdb.org/t/p/w500/${this.movieDetails.poster_path}` : '',
+        year: this.releaseYear,
+        mediaType: 'movie',
+        rating: this.movieDetails.vote_average,
+        overview: this.movieDetails.overview,
+        watched: false,
+        favorite: false,
+        dateAdded: Date.now()
+      };
+      
+      this.watchlistService.addToWatchlist(watchlistItem);
+      this.toastService.show(`"${this.movieDetails.title}" added to watch list`, 'success');
+    }
+  }
+  
+  isFavorite: boolean = false;
+  
+  toggleFavorite(event: Event): void {
+    event.stopPropagation();
+  
+    this.isFavorite = !this.isFavorite;
+    if (this.isFavorite) {
+      this.watchlistService.addToFavorites(parseInt(this.movieId));
+      this.toastService.show(`"${this.movieDetails.title}" added to favorites`, 'success');
+    } else {
+      this.watchlistService.removeFromFavorites(parseInt(this.movieId));
+      this.toastService.show(`"${this.movieDetails.title}" removed from favorites`, 'info');
+    }
+  }
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.movieId = params['id'];
