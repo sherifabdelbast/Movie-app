@@ -33,6 +33,8 @@ export class MovieDetailsComponent implements OnInit {
   isInWatchlist(): boolean {
     return this.watchlistService.isInWatchlist(parseInt(this.movieId), 'movie');
   }
+
+  
   toggleWatchlist(event: Event): void {
     event.stopPropagation();
     
@@ -109,12 +111,19 @@ export class MovieDetailsComponent implements OnInit {
         }
 
         this.isLoading = false;
+        this.checkFavoriteStatus(); 
       },
       error: (error) => {
         console.error('Error fetching movie data:', error);
         this.isLoading = false;
       },
     });
+  }
+
+  private checkFavoriteStatus(): void {
+    if (this.movieId) {
+      this.isFavorite = this.watchlistService.isFavorite(parseInt(this.movieId));
+    }
   }
 
   getImageUrl(path: string): string {

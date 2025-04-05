@@ -77,8 +77,16 @@ export class MovieCardComponent {
     
   }
 
-  
+  ngOnInit() {
+    this.checkFavoriteStatus();
+  }
 
+  
+  private checkFavoriteStatus(): void {
+    if (this.movieItem) {
+      this.isFavorite = this.watchlistService.isFavorite(this.movieItem.id);
+    }
+  }
 
   
   isInWatchlist(): boolean {

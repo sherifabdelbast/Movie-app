@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TvShow } from '../models/tvshow.interface';
@@ -13,11 +13,11 @@ import { ToastService } from '../services/toastservice.service';
   templateUrl: './tv-card.component.html',
   styleUrl: './tv-card.component.css'
 })
-export class TvCardComponent {
+export class TvCardComponent implements OnInit {
   @Input() tvShow!: TvShow;
   @Output() favorite = new EventEmitter<number>();
   
-  isFavorite: boolean = false; // Add this property
+  isFavorite: boolean = false;
   
   constructor(
     private router: Router,
@@ -25,6 +25,18 @@ export class TvCardComponent {
     private toastService: ToastService
   ) {}
   
+  ngOnInit() {
+    this.checkFavoriteStatus();
+  }
+
+  private checkFavoriteStatus(): void {
+    if (this.tvShow) {
+      this.isFavorite = this.watchlistService.isFavorite(this.tvShow.id);
+    }
+  }
+  
+  
+
   moveToTvShowDetails() {
     this.router.navigate(['/tv-shows', this.tvShow.id]);
   }

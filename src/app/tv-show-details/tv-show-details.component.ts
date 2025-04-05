@@ -59,14 +59,14 @@ export class TvShowDetailsComponent implements OnInit, OnDestroy {
   }
   
   // Add this method to check if the TV show is in favorites
-  private checkFavoriteStatus(): void {
-    if (this.tvShow) {
-      // Check if this show is in favorites through your service
-      // This depends on how your favorite service is implemented
-      // For example:
-      // this.isFavorite = this.watchlistService.isInFavorites(this.tvShow.id);
+  
+    private checkFavoriteStatus(): void {
+      if (this.tvShow) {
+        // Use the isFavorite method from your WatchlistService
+        this.isFavorite = this.watchlistService.isFavorite(this.tvShow.id);
+      }
     }
-  }
+  
   
   goBack() {
     this.router.navigate(['/tv-shows']);
