@@ -1,47 +1,48 @@
 <!-- src/app/home/home.component.html -->
 <!-- Hero Section -->
 <div class="relative bg-black">
-    <div class="absolute inset-0 bg-gradient-to-r from-black to-transparent z-10"></div>
-    <div class="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8 z-20">
-      <div class="max-w-2xl">
-        <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-          Stream Your Favorite Movies & TV Shows
-        </h1>
-        <p class="mt-4 text-xl text-gray-300">
-          Discover the latest releases, trending content, and curated collections all in one place.
-        </p>
-        <div class="mt-8 flex space-x-4">
-          <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md font-medium transition duration-150">
-            Browse Movies
-          </button>
-          <button class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md font-medium transition duration-150">
-            TV Shows
-          </button>
-        </div>
+  <div class="absolute inset-0 bg-gradient-to-r from-black to-transparent z-10"></div>
+  <div class="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8 z-20">
+    <div class="max-w-2xl">
+      <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+        Stream Your Favorite Movies & TV Shows
+      </h1>
+      <p class="mt-4 text-xl text-gray-300">
+        Discover the latest releases, trending content, and curated collections all in one place.
+      </p>
+      <div class="mt-8 flex space-x-4">
+        <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md font-medium transition duration-150">
+          Browse Movies
+        </button>
+        <button
+          class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-md font-medium transition duration-150">
+          TV Shows
+        </button>
       </div>
     </div>
   </div>
-  
+</div>
 
-  
-  <!-- Top Rated Section -->
-  <section class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900">Top Rated</h2>
-      <a routerLink="/movies/top-rated" class="text-red-600 hover:text-red-700 font-medium">View All</a>
-    </div>
-    <app-movie-list ></app-movie-list>
-  </section>
 
-  <!-- Popular TV Shows Section -->
-  <section class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900">Popular TV Shows</h2>
-      <a routerLink="/tv-shows" class="text-red-600 hover:text-red-700 font-medium">View All</a>
-    </div>
-    <app-tv-show-scrollable ></app-tv-show-scrollable>
-  </section>
-  
-  
-  <!-- Team Section -->
- <app-team></app-team>
+
+<!-- Top Rated Section -->
+<section class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-900">Top Rated</h2>
+    <a routerLink="/movies" class="text-red-600 hover:text-red-700 font-medium">View All</a>
+  </div>
+  <app-movie-list></app-movie-list>
+</section>
+
+<!-- Popular TV Shows Section -->
+<section class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-900">Popular TV Shows</h2>
+    <a routerLink="/tv-shows" class="text-red-600 hover:text-red-700 font-medium">View All</a>
+  </div>
+  <app-tv-show-scrollable></app-tv-show-scrollable>
+</section>
+
+
+<!-- Team Section -->
+<app-team></app-team>
