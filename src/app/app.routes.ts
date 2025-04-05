@@ -19,7 +19,7 @@ export const routes: Routes = [
 
       { path: '', component: TvShowListComponent },
 
-      { path: ':id', component: TvShowDetailsComponent }, // التفاصيل
+      { path: ':id', component: TvShowDetailsComponent },
     ],
   },
 
