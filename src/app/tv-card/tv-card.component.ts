@@ -17,6 +17,8 @@ export class TvCardComponent {
   @Input() tvShow!: TvShow;
   @Output() favorite = new EventEmitter<number>();
   
+  isFavorite: boolean = false; // Add this property
+  
   constructor(
     private router: Router,
     private watchlistService: WatchlistService,
@@ -29,8 +31,18 @@ export class TvCardComponent {
   
   toggleFavorite(event: Event) {
     event.stopPropagation(); // Prevent card click event
-    this.favorite.emit(this.tvShow.id);
-    console.log('Added to favorite:', this.tvShow.id);
+    
+    this.isFavorite = !this.isFavorite; // Toggle favorite status
+    
+    if (this.isFavorite) {
+      this.watchlistService.addToFavorites(this.tvShow.id);
+      this.toastService.show(`"${this.tvShow.name}" added to favorites`, 'success');
+    } else {
+      this.watchlistService.removeFromFavorites(this.tvShow.id);
+      this.toastService.show(`"${this.tvShow.name}" removed from favorites`, 'info');
+    }
+    
+    this.favorite.emit(this.tvShow.id); // Keep this for backward compatibility
   }
 
   formatDate(dateString: string | null): string {
@@ -40,13 +52,11 @@ export class TvCardComponent {
   }
 
   toggleWatchlist(event: Event) {
-    event.stopPropagation(); // Prevent card click event
+    event.stopPropagation();
     
-    // Check if the item is already in the watchlist
     const isAlreadyInWatchlist = this.watchlistService.isInWatchlist(this.tvShow.id, 'tv');
     
     if (!isAlreadyInWatchlist) {
-      // Create a watchlist item from the tvShow data
       const watchlistItem: WatchlistItem = {
         id: this.tvShow.id,
         title: this.tvShow.name,
@@ -62,21 +72,14 @@ export class TvCardComponent {
         dateAdded: Date.now()
       };
       
-      // Add to watchlist
       this.watchlistService.addToWatchlist(watchlistItem);
-      
-      // Show success toast
-      this.toastService.show(`"${this.tvShow.name}" تمت إضافته إلى قائمة المشاهدة`, 'success');
+      this.toastService.show(`"${this.tvShow.name}" added to watch list`, 'success');
     } else {
-      // Remove from watchlist
       this.watchlistService.removeFromWatchlist(this.tvShow.id, 'tv');
-      
-      // Show removed toast
-      this.toastService.show(`"${this.tvShow.name}" تمت إزالته من قائمة المشاهدة`, 'info');
+      this.toastService.show(`"${this.tvShow.name}" removed from watch list`, 'info');
     }
   }
   
-  // Check if the TV show is already in the watchlist
   isInWatchlist(): boolean {
     return this.watchlistService.isInWatchlist(this.tvShow.id, 'tv');
   }

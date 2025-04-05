@@ -27,6 +27,7 @@ export class TvShowDetailsComponent implements OnInit, OnDestroy {
   
   @Output() favorite = new EventEmitter<number>();
   
+  isFavorite: boolean = false;
   tvShow?: TvShow;
   isLoading = true;
   errorMessage?: string;
@@ -46,6 +47,8 @@ export class TvShowDetailsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (show) => {
           this.tvShow = show;
+          // Check if this show is in favorites
+          this.checkFavoriteStatus();
         },
         error: (err) => {
           console.error('Error loading TV show:', err);
@@ -55,16 +58,36 @@ export class TvShowDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(detailsSub);
   }
   
+  // Add this method to check if the TV show is in favorites
+  private checkFavoriteStatus(): void {
+    if (this.tvShow) {
+      // Check if this show is in favorites through your service
+      // This depends on how your favorite service is implemented
+      // For example:
+      // this.isFavorite = this.watchlistService.isInFavorites(this.tvShow.id);
+    }
+  }
+  
   goBack() {
     this.router.navigate(['/tv-shows']);
   }
   
   toggleFavorite(event: Event) {
-    event.stopPropagation(); // Prevent card click event
-    if (this.tvShow) {
-      this.favorite.emit(this.tvShow.id);
-      console.log('Added to favorite:', this.tvShow.id);
+    event.stopPropagation(); // Prevent propagation
+    if (!this.tvShow) return;
+    
+    this.isFavorite = !this.isFavorite; // Toggle favorite status
+    
+    if (this.isFavorite) {
+      this.watchlistService.addToFavorites(this.tvShow.id);
+      this.toastService.show(`"${this.tvShow.name}" added to favorites`, 'success');
+    } else {
+      this.watchlistService.removeFromFavorites(this.tvShow.id);
+      this.toastService.show(`"${this.tvShow.name}" removed from favorites`, 'info');
     }
+    
+    // Keep this for backward compatibility
+    this.favorite.emit(this.tvShow.id);
   }
 
   formatDate(dateString: string | null): string {
@@ -74,15 +97,13 @@ export class TvShowDetailsComponent implements OnInit, OnDestroy {
   }
 
   toggleWatchlist(event: Event) {
-    event.stopPropagation(); // Prevent card click event
+    event.stopPropagation();
     
     if (!this.tvShow) return;
     
-    // Check if the item is already in the watchlist
     const isAlreadyInWatchlist = this.watchlistService.isInWatchlist(this.tvShow.id, 'tv');
     
     if (!isAlreadyInWatchlist) {
-      // Create a watchlist item from the tvShow data
       const watchlistItem: WatchlistItem = {
         id: this.tvShow.id,
         title: this.tvShow.name,
@@ -98,32 +119,20 @@ export class TvShowDetailsComponent implements OnInit, OnDestroy {
         dateAdded: Date.now()
       };
       
-      // Add to watchlist
       this.watchlistService.addToWatchlist(watchlistItem);
-      
-      // Show success toast
-      this.toastService.show(`"${this.tvShow.name}" تمت إضافته إلى قائمة المشاهدة`, 'success');
-      
-      console.log('Added to watchlist:', this.tvShow.id);
+      this.toastService.show(`"${this.tvShow.name}" added to watch list`, 'success');
     } else {
-      // Remove from watchlist
       this.watchlistService.removeFromWatchlist(this.tvShow.id, 'tv');
-      
-      // Show removed toast
-      this.toastService.show(`"${this.tvShow.name}" تمت إزالته من قائمة المشاهدة`, 'info');
-      
-      console.log('Removed from watchlist:', this.tvShow.id);
+      this.toastService.show(`"${this.tvShow.name}" removed from watch list`, 'info');
     }
   }
   
-  // Check if the TV show is already in the watchlist
   isInWatchlist(): boolean {
     if (!this.tvShow) return false;
     return this.watchlistService.isInWatchlist(this.tvShow.id, 'tv');
   }
   
   ngOnDestroy() {
-    // Clean up all subscriptions when the component is destroyed
     this.subscriptions.unsubscribe();
   }
 }
