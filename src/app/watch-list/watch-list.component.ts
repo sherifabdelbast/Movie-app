@@ -142,4 +142,10 @@ export class WatchListComponent implements OnInit {
     }
     return '';
   }
+
+  // Add this method to the WatchListComponent class in watch-list.component.ts
+isAlreadyInWatchlist(id: number, mediaType: 'movie' | 'tv'): boolean {
+  // Use the watchlistService to check if the item exists
+  return this.watchlistService.isInWatchlist(id, mediaType);
+}
 }
