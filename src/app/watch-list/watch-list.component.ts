@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { WatchlistService } from '../services/watchlist.service';
 import { WatchlistItem } from '../models/watchlist-item.interface';
+import {ToastService} from "../services/toastservice.service";
+
 
 @Component({
   selector: 'app-watch-list',
@@ -19,7 +21,11 @@ export class WatchListComponent implements OnInit {
   sortOption: 'dateAdded' | 'title' | 'rating' = 'dateAdded';
   sortDirection: 'asc' | 'desc' = 'desc';
   
-  constructor(private watchlistService: WatchlistService) {}
+  constructor(private watchlistService: WatchlistService
+    ,private toastService: ToastService
+  ) {
+    
+  }
   
   ngOnInit(): void {
     // Subscribe to watchlist changes
@@ -27,13 +33,28 @@ export class WatchListComponent implements OnInit {
       this.watchlistItems = items;
       this.applyFilterAndSort();
     });
+    this.watchlistService.favoriteToggled$.subscribe(id => {
+      if (id !== null) {
+        // Update the UI when a favorite is toggled from elsewhere
+        this.updateFavoriteStatus(id);
+      }
+    });
   }
-  
+
+  // Add this method to update UI when favorite status changes
+private updateFavoriteStatus(id: number): void {
+  const items = this.watchlistItems.filter(item => item.id === id);
+  items.forEach(item => {
+    item.favorite = this.watchlistService.isFavorite(id);
+  });
+  this.applyFilterAndSort();
+}
   // Apply filter to watchlist items
   filterItems(filter: 'all' | 'movies' | 'tvshows' | 'favorites' | 'watched' | 'unwatched'): void {
     this.activeFilter = filter;
     this.applyFilterAndSort();
   }
+
   
   // Change sort option
   setSortOption(option: 'dateAdded' | 'title' | 'rating'): void {
@@ -107,7 +128,32 @@ export class WatchListComponent implements OnInit {
   
   // Toggle favorite status
   toggleFavorite(id: number, mediaType: 'movie' | 'tv'): void {
-    this.watchlistService.toggleFavorite(id, mediaType);
+    // Get the current item to access its details
+    const item = this.filteredItems.find(item => item.id === id && item.mediaType === mediaType);
+    
+    if (!item) return;
+    
+    // Toggle the favorite status
+    item.favorite = !item.favorite;
+    
+    // Update the service and show appropriate toast message
+    if (item.favorite) {
+      this.watchlistService.addToFavorites(id);
+      this.toastService.show(
+        `"${item.title }" added to favorites`, 
+        'success'
+      );
+    } else {
+      this.watchlistService.removeFromFavorites(id);
+      this.toastService.show(
+        `"${item.title }" removed from favorites`, 
+        'info'
+      );
+    }
+    
+    // Update the UI immediately without waiting for service response
+    // This provides better user experience with immediate feedback
+    this.filteredItems = [...this.filteredItems]; // Create new reference to trigger change detection
   }
   
   // Toggle watched status

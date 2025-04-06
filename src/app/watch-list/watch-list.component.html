@@ -1,154 +1,211 @@
 <div class="bg-gray-900 min-h-screen p-6">
-  <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto">
       <div class="flex items-center justify-between mb-8">
-          <h2 class="text-3xl font-bold text-white">My Watchlist</h2>
-          <div class="hidden sm:flex space-x-2">
-              <div class="relative">
-                  <input type="text" placeholder="Search your watchlist..." 
-                      class="bg-gray-800 text-white pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                  </svg>
-              </div>
+        <h2 class="text-3xl font-bold text-white">My Watchlist</h2>
+        <div class="flex items-center space-x-4">
+          <div class="relative">
+            <select id="sort-by" class="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 pl-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none shadow-lg transition-all duration-200 hover:border-indigo-400">
+              <option value="dateAdded">Recently Added</option>
+              <option value="title">Title</option>
+              <option value="rating">Rating</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
           </div>
+        </div>
       </div>
-
-      <div class="flex mb-6 justify-center sm:justify-start space-x-4">
-          <button (click)="filterItems('all')" 
-              [class]="activeFilter === 'all' ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-gray-800 hover:bg-gray-700'"
-              class="text-white px-4 py-2 rounded-full text-sm font-medium focus:outline-none transition-colors duration-200 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-              </svg>
-              All
-          </button>
-          <button (click)="filterItems('movies')" 
-              [class]="activeFilter === 'movies' ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-gray-800 hover:bg-gray-700'"
-              class="text-white px-4 py-2 rounded-full text-sm font-medium focus:outline-none transition-colors duration-200 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z" clip-rule="evenodd" />
-              </svg>
-              Movies
-          </button>
-          <button (click)="filterItems('tvshows')" 
-              [class]="activeFilter === 'tvshows' ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-gray-800 hover:bg-gray-700'"
-              class="text-white px-4 py-2 rounded-full text-sm font-medium focus:outline-none transition-colors duration-200 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd" />
-              </svg>
-              TV Shows
-          </button>
+  
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+        <button
+          (click)="filterItems('all')"
+          [class]="activeFilter === 'all' ? 'border-b-2 border-indigo-500 text-white bg-gradient-to-r from-indigo-500/10 to-transparent' : 'border-b-2 border-transparent text-gray-400 hover:text-white hover:bg-gray-800/30'"
+          class="py-3 text-center font-medium transition-all duration-200 text-sm rounded-t-lg"
+        >
+          All Content
+        </button>
+        <button
+          (click)="filterItems('movies')"
+          [class]="activeFilter === 'movies' ? 'border-b-2 border-indigo-500 text-white bg-gradient-to-r from-indigo-500/10 to-transparent' : 'border-b-2 border-transparent text-gray-400 hover:text-white hover:bg-gray-800/30'"
+          class="py-3 text-center font-medium transition-all duration-200 text-sm rounded-t-lg"
+        >
+          Movies
+        </button>
+        <button
+          (click)="filterItems('tvshows')"
+          [class]="activeFilter === 'tvshows' ? 'border-b-2 border-indigo-500 text-white bg-gradient-to-r from-indigo-500/10 to-transparent' : 'border-b-2 border-transparent text-gray-400 hover:text-white hover:bg-gray-800/30'"
+          class="py-3 text-center font-medium transition-all duration-200 text-sm rounded-t-lg"
+        >
+          TV Shows
+        </button>
+        <button
+          (click)="filterItems('favorites')"
+          [class]="activeFilter === 'favorites' ? 'border-b-2 border-indigo-500 text-white bg-gradient-to-r from-indigo-500/10 to-transparent' : 'border-b-2 border-transparent text-gray-400 hover:text-white hover:bg-gray-800/30'"
+          class="py-3 text-center font-medium transition-all duration-200 text-sm rounded-t-lg"
+        >
+          Favorites
+        </button>
       </div>
-
+  
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          @for (item of filteredItems; track item.id) {
-              <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
-                  <div class="relative">
-                      <img [src]="item.posterUrl" [alt]="item.title" class="w-full h-64 object-cover">
-                      <div class="absolute top-2 right-2 bg-black bg-opacity-70 text-xs text-white px-2 py-1 rounded">
-                          {{ isMovie(item) ? 'Movie' : 'TV Show' }}
-                      </div>
-                      @if (item.watched) {
-                          <div class="absolute bottom-2 left-2 bg-green-600 bg-opacity-90 text-xs text-white px-2 py-1 rounded-full flex items-center">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                              </svg>
-                              Watched
-                          </div>
-                      }
-                  </div>
-                  <div class="p-4">
-                      <h3 class="text-white text-lg font-semibold mb-1">{{ item.title }}</h3>
-                      <div class="flex justify-between mb-2">
-                          <p class="text-gray-400">{{ item.year }}</p>
-                          @if (item.rating) {
-                              <div class="flex items-center">
-                                  <span class="text-yellow-400">★</span>
-                                  <span class="text-gray-300 ml-1">{{ item.rating }}/10</span>
-                              </div>
-                          }
-                      </div>
-
-                      @if (isMovie(item)) {
-                          <div class="flex items-center text-gray-500 text-sm space-x-3 mb-2">
-                              @if (item.runtime) {
-                                  <div class="flex items-center">
-                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
-                                      </svg>
-                                      {{ item.runtime }} min
-                                  </div>
-                              }
-                              @if (item.director) {
-                                  <div>Dir: {{ item.director }}</div>
-                              }
-                          </div>
-                      } @else if (isTvShow(item)) {
-                          <div class="flex items-center text-gray-500 text-sm space-x-3 mb-2">
-                              @if (item.seasons) {
-                                  <div class="flex items-center">
-                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                          <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                                      </svg>
-                                      {{ item.seasons }} {{ item.seasons === 1 ? 'season' : 'seasons' }}
-                                  </div>
-                              }
-                              @if (item.network) {
-                                  <div>{{ item.network }}</div>
-                              }
-                          </div>
-                      }
-
-                      <div class="flex justify-between mt-4">
-                          <button (click)="removeFromWatchlist(item.id, item.mediaType)" 
-                              class="text-red-500 hover:text-red-400 text-sm font-medium focus:outline-none flex items-center">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                              </svg>
-                              Remove
-                          </button>
-                          <button (click)="toggleWatched(item.id, item.mediaType)" 
-                              [class]="item.watched ? 'bg-green-600 hover:bg-green-500' : 'bg-indigo-600 hover:bg-indigo-500'"
-                              class="text-white px-3 py-1 rounded text-sm font-medium focus:outline-none flex items-center transition-colors duration-200">
-                              @if (item.watched) {
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                  </svg>
-                                  Watched
-                              } @else {
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                  </svg>
-                                  Watch
-                              }
-                          </button>
-                      </div>
-                  </div>
+        @for (item of filteredItems; track item.id) {
+        <div class="group relative rounded-xl overflow-hidden bg-gray-800 shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105">
+          <div class="relative aspect-[2/3]">
+            <!-- Gradient overlay for better text visibility -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+            
+            <!-- Poster Image -->
+            <img
+              [src]="item.posterUrl"
+              [alt]="item.title"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              onerror="this.src='assets/images/poster-placeholder.jpg'"
+            />
+            
+            <!-- Media type badge -->
+            <div class="absolute top-3 left-3 z-20">
+              <span class="bg-black/60 text-xs font-medium text-white px-3 py-1.5 rounded-full backdrop-blur-md shadow-lg border border-white/10 flex items-center">
+                @if (isMovie(item)) {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z"/>
+                </svg>
+                Movie
+                } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"/>
+                </svg>
+                TV Show
+                }
+              </span>
+            </div>
+            
+            <!-- Rating badge -->
+            @if (item.rating) {
+            <div class="absolute top-3 right-3 z-20">
+              <div class="flex items-center bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-white/10">
+                <span class="text-yellow-400 text-xs">★</span>
+                <span class="text-white text-xs font-medium ml-1">{{ item.rating.toFixed(1) }}</span>
               </div>
-          } @empty {
-              <div class="col-span-full text-center py-12">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+            </div>
+            }
+            
+            <!-- Action buttons overlay -->
+            <div class="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 z-20 transition-opacity duration-300 flex flex-col space-y-3">
+              <div class="flex justify-between items-center">
+                <button
+                  (click)="toggleFavorite(item.id, item.mediaType); $event.stopPropagation()"
+                  class="text-white bg-black/40 backdrop-blur-md p-2 rounded-full focus:outline-none transition-all duration-200 hover:scale-110 hover:bg-black/60 border border-white/10"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    [attr.fill]="item.favorite ? 'rgb(234, 179, 8)' : 'none'"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
                   </svg>
-                  <div class="text-gray-400 text-lg mb-4">Your watchlist is empty</div>
-                  <p class="text-gray-500 mb-6">Start exploring movies and TV shows to add to your watchlist</p>
-                  <div class="flex space-x-4 justify-center">
-                      <a  routerLink="/movies" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded-full font-medium focus:outline-none transition-colors duration-200 flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                              <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z" />
-                          </svg>
-                          Explore Movies
-                        </a>
-                      <a routerLink="/tv-shows" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded-full font-medium focus:outline-none transition-colors duration-200 flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                              <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd" />
-                          </svg>
-                          Explore TV Shows
-                        </a>
-                  </div>
+                </button>
+                
+                <button
+                  (click)="toggleWatched(item.id, item.mediaType); $event.stopPropagation()"
+                  class="bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-medium focus:outline-none transition-all duration-200 hover:bg-black/80 border border-white/10 shadow-lg"
+                >
+                  @if (item.watched) {
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Watched
+                  </span>
+                  } @else {
+                  <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Watch
+                  </span>
+                  }
+                </button>
               </div>
-          }
+              
+              <button
+                (click)="removeFromWatchlist(item.id, item.mediaType); $event.stopPropagation()"
+                class="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-2 rounded-full text-sm font-medium focus:outline-none transition-all duration-200 hover:from-red-500 hover:to-red-400 shadow-lg flex items-center justify-center border border-white/10"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                </svg>
+                Remove
+              </button>
+            </div>
+          </div>
+          
+          <div class="p-4">
+            <h3 class="text-white font-medium text-lg line-clamp-1">{{ item.title }}</h3>
+            <div class="flex items-center mt-1 text-sm text-gray-400">
+              <span>{{ item.year }}</span>
+              
+              @if (isMovie(item) && item.runtime) {
+              <span class="mx-2">•</span>
+              <span>{{ item.runtime }} min</span>
+              } @else if (isTvShow(item) && item.seasons) {
+              <span class="mx-2">•</span>
+              <span>{{ item.seasons }} {{ item.seasons === 1 ? "season" : "seasons" }}</span>
+              }
+              
+              @if (item.watched) {
+              <span class="ml-auto flex items-center text-green-400 bg-green-900/20 px-2 py-0.5 rounded-full text-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Watched
+              </span>
+              }
+            </div>
+            
+            @if ((isMovie(item) && item.director) || (isTvShow(item) && item.network)) {
+            <div class="mt-2 text-xs text-gray-500">
+              @if (isMovie(item) && item.director) {
+              <span>Director: {{ item.director }}</span>
+              } @else if (isTvShow(item) && item.network) {
+              <span>{{ item.network }}</span>
+              }
+            </div>
+            }
+          </div>
+        </div>
+        } @empty {
+        <div class="col-span-full text-center py-12">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/>
+          </svg>
+          <div class="text-gray-300 text-xl font-medium mb-2">Your watchlist is empty</div>
+          <p class="text-gray-500 mb-6">Start exploring movies and TV shows to add to your watchlist</p>
+          <div class="flex space-x-4 justify-center">
+            <a routerLink="/movies" class="bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white px-6 py-2.5 rounded-full font-medium focus:outline-none transition-colors duration-200 flex items-center shadow-lg border border-white/10">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z"/>
+              </svg>
+              Explore Movies
+            </a>
+            <a routerLink="/tv-shows" class="bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white px-6 py-2.5 rounded-full font-medium focus:outline-none transition-colors duration-200 flex items-center shadow-lg border border-white/10">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"/>
+              </svg>
+              Explore TV Shows
+            </a>
+          </div>
+        </div>
+        }
       </div>
+    </div>
   </div>
-</div>

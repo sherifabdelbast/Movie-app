@@ -10,7 +10,10 @@ export class WatchlistService {
   private watchlistItems: WatchlistItem[] = [];
   private watchlistSubject = new BehaviorSubject<WatchlistItem[]>([]);
   private favoritesCountSubject = new BehaviorSubject<number>(0);
-  
+  private favoriteToggledSubject = new BehaviorSubject<number | null>(null);
+
+  favoriteToggled$ = this.favoriteToggledSubject.asObservable();
+
 favoritesCount$ = this.favoritesCountSubject.asObservable();
   watchlist$ = this.watchlistSubject.asObservable();
   
@@ -34,18 +37,21 @@ favoritesCount$ = this.favoritesCountSubject.asObservable();
     const count = this.favorites.length;
     this.favoritesCountSubject.next(count);
   }
+
   addToFavorites(id: number): void {
     if (!this.isFavorite(id)) {
       this.favorites.push(id);
       this.saveFavorites();
       this.updateFavoritesCount();
+      this.favoriteToggledSubject.next(id); // Emit the ID when added
     }
   }
-  removeFromFavorites(id: number): void {
-    this.favorites = this.favorites.filter(favId => favId !== id);
-    this.saveFavorites();
-    this.updateFavoritesCount();
-  }
+ removeFromFavorites(id: number): void {
+  this.favorites = this.favorites.filter(favId => favId !== id);
+  this.saveFavorites();
+  this.updateFavoritesCount();
+  this.favoriteToggledSubject.next(id); // Emit the ID when removed
+}
   // Load watchlist from localStorage
   private loadWatchlist(): void {
     const savedWatchlist = localStorage.getItem('watchlist');
@@ -83,11 +89,16 @@ favoritesCount$ = this.favoritesCountSubject.asObservable();
 
   // Toggle favorite status
   toggleFavorite(id: number, mediaType: 'movie' | 'tv'): void {
-    const item = this.findItem(id, mediaType);
-    if (item) {
-      item.favorite = !item.favorite;
-      this.updateWatchlist();
+    if (this.isFavorite(id)) {
+      this.removeFromFavorites(id);
+    } else {
+      this.addToFavorites(id);
     }
+    const item = this.findItem(id, mediaType);
+  if (item) {
+    item.favorite = this.isFavorite(id);
+    this.updateWatchlist();
+  }
   }
   
   // Toggle watched status
