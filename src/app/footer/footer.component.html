@@ -1,18 +1,20 @@
-<footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div class="col-span-1 md:col-span-1">
-        <h3 class="text-white text-lg font-semibold mb-4">MovieApp</h3>
-        <p class="mb-4">
+<footer class="bg-gray-900 text-gray-400 py-6 sm:py-10 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <!-- Main footer content -->
+    <div class="grid grid-cols-2 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4">
+      <!-- Company info -->
+      <div class="col-span-2 sm:col-span-2 md:col-span-1 mb-6 md:mb-0">
+        <h3 class="text-white text-base sm:text-lg font-semibold mb-3 sm:mb-4">MovieApp</h3>
+        <p class="text-sm sm:text-base mb-4">
           Your personal movie companion to discover, save, and enjoy the best
           films from around the world.
         </p>
         <div class="flex space-x-4">
-          <a href="#" class="text-gray-400 hover:text-white">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-150">
             <span class="sr-only">Facebook</span>
             <!-- Facebook icon -->
             <svg
-              class="h-6 w-6"
+              class="h-5 w-5 sm:h-6 sm:w-6"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -24,11 +26,11 @@
               />
             </svg>
           </a>
-          <a href="#" class="text-gray-400 hover:text-white">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-150">
             <span class="sr-only">Instagram</span>
             <!-- Instagram icon -->
             <svg
-              class="h-6 w-6"
+              class="h-5 w-5 sm:h-6 sm:w-6"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -40,11 +42,11 @@
               />
             </svg>
           </a>
-          <a href="#" class="text-gray-400 hover:text-white">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-150">
             <span class="sr-only">Twitter</span>
             <!-- Twitter icon -->
             <svg
-              class="h-6 w-6"
+              class="h-5 w-5 sm:h-6 sm:w-6"
               fill="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -57,85 +59,68 @@
         </div>
       </div>
 
+      <!-- Footer links - each section spans full column on mobile, half column on small screens -->
       <div class="col-span-1">
-        <h3 class="text-white text-lg font-semibold mb-4">Navigation</h3>
-        <ul class="space-y-2">
-          <li><a [routerLink]="['/']" class="hover:text-white">Home</a></li>
+        <h3 class="text-white text-base sm:text-lg font-semibold mb-3 sm:mb-4">Navigation</h3>
+        <ul class="space-y-2 text-sm sm:text-base">
+          <li><a [routerLink]="['/']" class="hover:text-white transition duration-150">Home</a></li>
           <li>
-            <a [routerLink]="['/movies']" class="hover:text-white">Movies</a>
+            <a [routerLink]="['/movies']" class="hover:text-white transition duration-150">Movies</a>
           </li>
           <li>
-            <a [routerLink]="['/watchlist']" class="hover:text-white"
-              >Watchlist</a
-            >
+            <a [routerLink]="['/watchlist']" class="hover:text-white transition duration-150">Watchlist</a>
           </li>
           <li>
-            <a [routerLink]="['/genres']" class="hover:text-white">Genres</a>
+            <a [routerLink]="['/genres']" class="hover:text-white transition duration-150">Genres</a>
           </li>
         </ul>
       </div>
 
       <div class="col-span-1">
-        <h3 class="text-white text-lg font-semibold mb-4">Categories</h3>
-        <ul class="space-y-2">
+        <h3 class="text-white text-base sm:text-lg font-semibold mb-3 sm:mb-4">Categories</h3>
+        <ul class="space-y-2 text-sm sm:text-base">
           <li>
-            <a [routerLink]="['/genre/action']" class="hover:text-white"
-              >Action</a
-            >
+            <a [routerLink]="['/genre/action']" class="hover:text-white transition duration-150">Action</a>
           </li>
           <li>
-            <a [routerLink]="['/genre/comedy']" class="hover:text-white"
-              >Comedy</a
-            >
+            <a [routerLink]="['/genre/comedy']" class="hover:text-white transition duration-150">Comedy</a>
           </li>
           <li>
-            <a [routerLink]="['/genre/drama']" class="hover:text-white"
-              >Drama</a
-            >
+            <a [routerLink]="['/genre/drama']" class="hover:text-white transition duration-150">Drama</a>
           </li>
           <li>
-            <a [routerLink]="['/genre/sci-fi']" class="hover:text-white"
-              >Sci-Fi</a
-            >
+            <a [routerLink]="['/genre/sci-fi']" class="hover:text-white transition duration-150">Sci-Fi</a>
           </li>
           <li>
-            <a [routerLink]="['/genre/horror']" class="hover:text-white"
-              >Horror</a
-            >
+            <a [routerLink]="['/genre/horror']" class="hover:text-white transition duration-150">Horror</a>
           </li>
         </ul>
       </div>
 
       <div class="col-span-1">
-        <h3 class="text-white text-lg font-semibold mb-4">Legal</h3>
-        <ul class="space-y-2">
+        <h3 class="text-white text-base sm:text-lg font-semibold mb-3 sm:mb-4">Legal</h3>
+        <ul class="space-y-2 text-sm sm:text-base">
           <li>
-            <a [routerLink]="['/terms']" class="hover:text-white"
-              >Terms of Service</a
-            >
+            <a [routerLink]="['/terms']" class="hover:text-white transition duration-150">Terms of Service</a>
           </li>
           <li>
-            <a [routerLink]="['/privacy']" class="hover:text-white"
-              >Privacy Policy</a
-            >
+            <a [routerLink]="['/privacy']" class="hover:text-white transition duration-150">Privacy Policy</a>
           </li>
           <li>
-            <a [routerLink]="['/cookies']" class="hover:text-white"
-              >Cookie Policy</a
-            >
+            <a [routerLink]="['/cookies']" class="hover:text-white transition duration-150">Cookie Policy</a>
           </li>
           <li>
-            <a [routerLink]="['/about']" class="hover:text-white">About Us</a>
+            <a [routerLink]="['/about']" class="hover:text-white transition duration-150">About Us</a>
           </li>
         </ul>
       </div>
     </div>
 
-    <div
-      class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center"
-    >
-      <p>© {{ currentYear }} MovieApp. All rights reserved.</p>
- 
+    <!-- Copyright section -->
+    <div class="border-t border-gray-800 mt-6 pt-6 sm:mt-8 sm:pt-8 text-sm sm:text-base">
+      <div class="flex flex-col sm:flex-row justify-between items-center">
+        <p class="mb-4 sm:mb-0 text-center sm:text-left">© {{ currentYear }} MovieApp. All rights reserved.</p>
+      </div>
     </div>
   </div>
 </footer>
