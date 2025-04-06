@@ -1,6 +1,6 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">Register</h2>
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">Login</h2>
     <form (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
       <div class="mb-4">
         <label class="block text-gray-600 text-sm font-medium mb-2">Email</label>
@@ -34,15 +34,13 @@
         }
       </div>
 
-
-<button
-  type="submit"
-  class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
-  [disabled]="loginForm.invalid"
->
-  Login
-</button>
-
+      <button
+        type="submit"
+        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
     </form>
   </div>
 </div>

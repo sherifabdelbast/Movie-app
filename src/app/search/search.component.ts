@@ -17,7 +17,7 @@ import { SearchService, SearchItem } from '../services/search-service.service';
         type="text" 
         [(ngModel)]="searchQuery"
         (input)="onSearchInput()"
-        placeholder="Search shows..." 
+        placeholder="Search ..." 
         class="bg-gray-800 text-white rounded-full py-2 pl-4 pr-10 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
       <button class="absolute right-0 top-0 mt-2 mr-3">

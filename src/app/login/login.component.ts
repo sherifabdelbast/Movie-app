@@ -1,29 +1,39 @@
-import { Component , inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators, FormBuilder} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
   loginForm: FormGroup;
-  FormBuilder = inject(FormBuilder)
-  constructor(){
-    this.loginForm = this.FormBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+  formBuilder = inject(FormBuilder);
+  private router = inject(Router); // Using inject() for consistency
+
+  constructor() {
+    // Define the form with only email and password fields
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirm_password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
 
-    }
-    handleSubmit() {
-      if (this.loginForm.valid) {
-        console.log('Form Data:', this.loginForm.value);
-      }
-    }
+  handleSubmit() {
+    if (this.loginForm.valid) {
+      
+      const { email, password } = this.loginForm.value;
+      console.log('Login attempt with:', { email, password });
 
+     
+
+     
+      this.router.navigate(['/']);
+    } else {
+      console.log('Form is invalid');
+    }
+  }
 }

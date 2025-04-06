@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { WatchlistService } from '../services/watchlist.service';
 import { ToastService } from '../services/toastservice.service';
 import { WatchlistItem } from '../models/watchlist-item.interface';
+import { LanguageService } from '../services/language.service';
+
 
 @Component({
   selector: 'app-movie-details',
@@ -28,7 +30,8 @@ export class MovieDetailsComponent implements OnInit {
     private movieService: MovieDetailsApiService,
     private http: HttpClient,
     private watchlistService: WatchlistService, 
-    private toastService: ToastService
+    private toastService: ToastService,
+    private languageService: LanguageService
   ) {}
   isInWatchlist(): boolean {
     return this.watchlistService.isInWatchlist(parseInt(this.movieId), 'movie');

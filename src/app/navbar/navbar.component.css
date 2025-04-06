@@ -1,0 +1,13 @@
+.navbar {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+  }
+  .language-switcher {
+    margin-left: auto;
+  }
+  select {
+    padding: 5px;
+  }
